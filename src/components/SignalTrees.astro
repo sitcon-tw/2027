@@ -1,0 +1,98 @@
+<canvas class="signal-trees" data-signal-trees aria-hidden="true"></canvas>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>("[data-signal-trees]");
+  const context = canvas?.getContext("2d");
+  const eventStrip = document.querySelector<HTMLElement>(".event-strip");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  let animationId = 0;
+  let startedAt = 0;
+
+  const clamp = (value: number) => Math.max(0, Math.min(1, value));
+  const easeOut = (value: number) => 1 - Math.pow(1 - clamp(value), 3);
+
+  const drawSegment = (
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+    progress: number,
+  ) => {
+    const amount = easeOut(progress);
+    if (!context || amount <= 0) return;
+    context.moveTo(fromX, fromY);
+    context.lineTo(fromX + (toX - fromX) * amount, fromY + (toY - fromY) * amount);
+  };
+
+  const drawNode = (x: number, y: number, progress: number, color: string) => {
+    if (!context || progress <= 0) return;
+    const size = 5 * easeOut(progress);
+    context.fillStyle = color;
+    context.fillRect(x - size / 2, y - size / 2, size, size);
+  };
+
+  const drawTree = (x: number, baseY: number, size: number, color: string, progress: number) => {
+    if (!context) return;
+    const topY = baseY - size;
+    const leftY = baseY - size * 0.72;
+    const rightY = baseY - size * 0.48;
+    const leftX = x - size * 0.34;
+    const rightX = x + size * 0.36;
+
+    context.beginPath();
+    context.strokeStyle = color;
+    context.lineWidth = 2;
+    context.lineCap = "square";
+    drawSegment(x, baseY, x, topY, progress / 0.58);
+    drawSegment(x, leftY + size * 0.2, leftX, leftY, (progress - 0.38) / 0.32);
+    drawSegment(x, rightY + size * 0.18, rightX, rightY, (progress - 0.55) / 0.3);
+    context.stroke();
+
+    drawNode(x, topY, (progress - 0.5) / 0.16, color);
+    drawNode(leftX, leftY, (progress - 0.64) / 0.16, color);
+    drawNode(rightX, rightY, (progress - 0.78) / 0.16, color);
+  };
+
+  const draw = (timestamp: number) => {
+    if (!canvas || !context) return;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const canvasTop = canvas.getBoundingClientRect().top;
+    const stripTop = eventStrip?.getBoundingClientRect().top;
+    const baseY = stripTop ? stripTop - canvasTop : height - 24;
+    const elapsed = reduceMotion.matches ? 2_000 : timestamp - startedAt;
+    const largeTree = Math.min(72, Math.max(44, width * 0.07));
+
+    context.clearRect(0, 0, width, height);
+    context.beginPath();
+    context.strokeStyle = "rgba(242, 239, 229, 0.22)";
+    context.lineWidth = 1;
+    drawSegment(width * 0.56, baseY, width * 0.96, baseY, elapsed / 650);
+    context.stroke();
+
+    drawTree(width * 0.66, baseY, largeTree, "#c9ff3d", clamp(elapsed / 1_050));
+    drawTree(width * 0.8, baseY, largeTree * 0.72, "#ff625b", clamp((elapsed - 180) / 950));
+    drawTree(width * 0.91, baseY, largeTree * 0.54, "#7d88ff", clamp((elapsed - 340) / 850));
+
+    if (!reduceMotion.matches && elapsed < 1_300) {
+      animationId = window.requestAnimationFrame(draw);
+    }
+  };
+
+  const resize = () => {
+    if (!canvas || !context) return;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.round(rect.width * ratio);
+    canvas.height = Math.round(rect.height * ratio);
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    window.cancelAnimationFrame(animationId);
+    startedAt = performance.now();
+    animationId = window.requestAnimationFrame(draw);
+  };
+
+  resize();
+  window.addEventListener("resize", resize, { passive: true });
+  document.addEventListener("astro:before-swap", () => window.cancelAnimationFrame(animationId), { once: true });
+</script>

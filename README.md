@@ -31,3 +31,10 @@ pnpm build
 ```bash
 rsvg-convert public/og-card.svg -o public/og-card.png
 ```
+
+## SEO 部署檢查
+
+- 部署網址必須保留結尾斜線：`https://sitcon.org/2027/`。
+- 將 `https://sitcon.org/2027/` 加入根網站的 `https://sitcon.org/sitemap.xml`；本專案另提供 `https://sitcon.org/2027/sitemap.xml`。
+- 正式上線後使用 Google Search Console 提交 sitemap，並以 Rich Results Test 驗證 Event 結構化資料。
+- 更新日期、地點或 OG 內容時，同步修改 `src/data/site.ts`、`public/og-card.svg`、`public/og-card.png` 與 `public/sitemap.xml` 的 `lastmod`。

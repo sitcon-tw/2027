@@ -211,7 +211,7 @@ canvas {
     linear-gradient(90deg, rgba(12, 16, 14, 0.7) 0%, rgba(12, 16, 14, 0.3) 55%, rgba(12, 16, 14, 0.52) 100%);
 }
 
-.signal-garden,
+.signal-trees,
 .hero-grid {
   position: absolute;
   inset: var(--header-height) 0 0;
@@ -219,13 +219,14 @@ canvas {
   height: calc(100% - var(--header-height));
 }
 
-.signal-garden {
-  z-index: -2;
-  opacity: 0.34;
+.signal-trees {
+  z-index: -1;
+  opacity: 0.72;
+  pointer-events: none;
 }
 
 .hero-grid {
-  z-index: -1;
+  z-index: -2;
   opacity: 0.08;
   background-image:
     linear-gradient(to right, var(--paper) 1px, transparent 1px),

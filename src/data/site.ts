@@ -33,6 +33,12 @@ export const siteConfig = {
   fullName: "SITCON 學生計算機年會 2027",
   status: "籌備進行中",
   tagline: "一起做出 SITCON 2027",
+  seo: {
+    title: "SITCON 2027 學生計算機年會｜籌備資訊與工作人員招募",
+    description:
+      "SITCON 2027 學生計算機年會將於 2027 年 3 月 13 日在中央研究院人文社會科學館舉行。查看最新籌備時程、工作人員招募與參與方式。",
+    imageAlt: "SITCON 2027 學生計算機年會，2027 年 3 月 13 日於中央研究院舉行",
+  },
   dateDisplay: "2027.03.13",
   startDate: "2027-03-13T09:00:00+08:00",
   endDate: "2027-03-13T18:00:00+08:00",

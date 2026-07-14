@@ -8,65 +8,145 @@ interface Props {
 }
 
 const {
-  title = `${siteConfig.name}｜${siteConfig.status}`,
-  description = `${siteConfig.fullName} 將於 ${siteConfig.dateDisplay} 在${siteConfig.venue}舉行。查看籌備時程、招募預告並提前跳坑。`,
+  title = siteConfig.seo.title,
+  description = siteConfig.seo.description,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const eventJsonLd = {
+const canonicalPath = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(canonicalPath, Astro.site);
+const imageUrl = new URL("og-card.png", canonical);
+const organizationId = "https://sitcon.org/#organization";
+const websiteId = "https://sitcon.org/#website";
+const webpageId = `${canonical.href}#webpage`;
+const imageId = `${canonical.href}#primaryimage`;
+const eventId = `${canonical.href}#event`;
+
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Event",
-  name: siteConfig.fullName,
-  description,
-  startDate: siteConfig.startDate,
-  endDate: siteConfig.endDate,
-  eventStatus: "https://schema.org/EventScheduled",
-  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-  location: {
-    "@type": "Place",
-    name: siteConfig.venue,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "研究院路二段 128 號",
-      addressLocality: "南港區",
-      addressRegion: "臺北市",
-      addressCountry: "TW",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": organizationId,
+      name: "SITCON 學生計算機年會",
+      alternateName: "Students' Information Technology Conference",
+      url: "https://sitcon.org/",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://sitcon.org/branding/assets/logos/withname.png",
+      },
+      email: "contact@sitcon.org",
+      sameAs: [
+        siteConfig.links.facebook,
+        siteConfig.links.instagram,
+        siteConfig.links.threads,
+        siteConfig.links.youtube,
+        siteConfig.links.flickr,
+        siteConfig.links.telegram,
+        siteConfig.links.github,
+      ],
     },
-  },
-  organizer: {
-    "@type": "Organization",
-    name: "SITCON 學生計算機年會",
-    url: "https://sitcon.org",
-  },
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: "https://sitcon.org/",
+      name: "SITCON 學生計算機年會",
+      alternateName: "Students' Information Technology Conference",
+      inLanguage: "zh-TW",
+      publisher: { "@id": organizationId },
+    },
+    {
+      "@type": "ImageObject",
+      "@id": imageId,
+      url: imageUrl.href,
+      contentUrl: imageUrl.href,
+      width: 1200,
+      height: 630,
+      caption: siteConfig.seo.imageAlt,
+    },
+    {
+      "@type": "WebPage",
+      "@id": webpageId,
+      url: canonical.href,
+      name: title,
+      description,
+      inLanguage: "zh-TW",
+      isPartOf: { "@id": websiteId },
+      about: { "@id": organizationId },
+      primaryImageOfPage: { "@id": imageId },
+      mainEntity: { "@id": eventId },
+    },
+    {
+      "@type": "Event",
+      "@id": eventId,
+      url: canonical.href,
+      name: "SITCON 2027 學生計算機年會",
+      alternateName: "Students' Information Technology Conference 2027",
+      description,
+      image: [imageUrl.href],
+      startDate: siteConfig.startDate,
+      endDate: siteConfig.endDate,
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      inLanguage: "zh-TW",
+      location: {
+        "@type": "Place",
+        name: siteConfig.venue,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "研究院路二段 128 號",
+          addressLocality: "南港區",
+          addressRegion: "臺北市",
+          postalCode: "115",
+          addressCountry: "TW",
+        },
+      },
+      organizer: { "@id": organizationId },
+      performer: { "@id": organizationId },
+    },
+  ],
 };
 ---
 
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#101312" />
     <meta name="description" content={description} />
     <meta name="author" content="SITCON" />
-    <meta name="keywords" content="SITCON, SITCON 2027, 學生計算機年會, 開源, 學生社群" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="application-name" content="SITCON 2027" />
+    <meta name="apple-mobile-web-app-title" content="SITCON 2027" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="zh_TW" />
     <meta property="og:site_name" content="SITCON" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL("og-card.png", Astro.site)} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:secure_url" content={imageUrl} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={siteConfig.seo.imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@SITCONtw" />
+    <meta name="twitter:creator" content="@SITCONtw" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL("og-card.png", Astro.site)} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={siteConfig.seo.imageAlt} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-TW" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="sitemap" type="application/xml" href={new URL("sitemap.xml", canonical)} />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <title>{title}</title>
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(eventJsonLd)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳至主要內容</a>
