@@ -1,0 +1,39 @@
+---
+import { ArrowUpRight, FileText, FolderGit2, Mail } from "@lucide/astro";
+import { siteConfig } from "../data/site";
+---
+
+<section id="about" class="section about-section" aria-labelledby="about-heading">
+  <div class="shell about-grid">
+    <div class="about-title">
+      <p class="eyebrow">Students' Information Technology Conference</p>
+      <h2 id="about-heading">學生創造的<br />開源現場。</h2>
+    </div>
+    <div class="about-copy">
+      <p>學生計算機年會（SITCON）自 2012 年發起，以學生為本、由學生自發舉辦，長期投入學生資訊教育與開源精神推廣。</p>
+      <p>我們希望讓所有對資訊有興趣的學生齊聚一堂，彼此激盪、傳承與啟發。不論背景與身分，都能在這裡找到參與、分享與實作的機會。</p>
+      <a class="text-link" href={siteConfig.links.codeOfConduct} target="_blank" rel="noreferrer">
+        閱讀行為準則
+        <ArrowUpRight size={18} aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+
+  <div class="shell community-links">
+    <a href={siteConfig.links.mailingList} target="_blank" rel="noreferrer">
+      <Mail size={21} aria-hidden="true" />
+      <span><small>參與公開討論</small>郵件論壇</span>
+      <ArrowUpRight size={22} aria-hidden="true" />
+    </a>
+    <a href={siteConfig.links.hackmd} target="_blank" rel="noreferrer">
+      <FileText size={21} aria-hidden="true" />
+      <span><small>瀏覽公開共筆</small>HackMD</span>
+      <ArrowUpRight size={22} aria-hidden="true" />
+    </a>
+    <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
+      <FolderGit2 size={21} aria-hidden="true" />
+      <span><small>瀏覽公開程式碼</small>GitHub</span>
+      <ArrowUpRight size={22} aria-hidden="true" />
+    </a>
+  </div>
+</section>

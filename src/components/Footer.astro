@@ -1,0 +1,92 @@
+---
+import { ArrowUpRight } from "@lucide/astro";
+import { siteConfig } from "../data/site";
+
+const socials = [
+  ["Facebook", siteConfig.links.facebook],
+  ["Threads", siteConfig.links.threads],
+  ["YouTube", siteConfig.links.youtube],
+  ["Instagram", siteConfig.links.instagram],
+  ["Flickr", siteConfig.links.flickr],
+  ["Telegram", siteConfig.links.telegram],
+] as const;
+
+const participation = [
+  ["提前跳坑", siteConfig.preJumpForm.url],
+  ["郵件論壇", siteConfig.links.mailingList],
+  ["HackMD", siteConfig.links.hackmd],
+  ["GitHub", siteConfig.links.github],
+  ["行為準則", siteConfig.links.codeOfConduct],
+  ["支持 SITCON", siteConfig.links.donate],
+] as const;
+
+const projects = [
+  ["Hour of Code", siteConfig.links.hourOfCode],
+  ["SITCON Camp", siteConfig.links.camp],
+  ["SITCON Hackathon", siteConfig.links.hackathon],
+  ["SITCON Podcast", siteConfig.links.podcast],
+  ["好駭客", siteConfig.links.goodHacker],
+] as const;
+
+const pastYears = Array.from({ length: 14 }, (_, index) => 2026 - index);
+---
+
+<footer class="site-footer">
+  <div class="shell footer-top">
+    <div class="footer-brand">
+      <img src="assets/sitcon-white.svg" alt="SITCON" width="180" height="52" />
+      <p>學生計算機年會<br />Students' Information Technology Conference</p>
+    </div>
+    <div class="footer-contact-group">
+      <span>聯絡我們</span>
+      <a class="footer-contact" href={siteConfig.links.contact}>
+        contact@sitcon.org
+        <ArrowUpRight size={20} aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+
+  <nav class="shell footer-socials" aria-label="SITCON 社群平台">
+    {socials.map(([label, href]) => <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>)}
+  </nav>
+
+  <div class="shell footer-directory">
+    <nav class="footer-link-group" aria-labelledby="footer-participation-heading">
+      <h2 id="footer-participation-heading">參與 SITCON</h2>
+      <ul>
+        {
+          participation.map(([label, href]) => (
+            <li><a href={href} target="_blank" rel="noopener noreferrer">{label}</a></li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer-link-group" aria-labelledby="footer-projects-heading">
+      <h2 id="footer-projects-heading">SITCON 子計畫</h2>
+      <ul>
+        {
+          projects.map(([label, href]) => (
+            <li><a href={href} target="_blank" rel="noopener noreferrer">{label}</a></li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer-link-group footer-archive" aria-labelledby="footer-archive-heading">
+      <h2 id="footer-archive-heading">歷年網站</h2>
+      <ul>
+        {
+          pastYears.map((year) => (
+            <li><a href={`https://sitcon.org/${year}/`} target="_blank" rel="noopener noreferrer">{year}</a></li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="shell footer-bottom">
+    <p>© 2027 SITCON Students' Information Technology Conference.</p>
+    <p>以學生為本，由學生自發舉辦。</p>
+  </div>
+</footer>

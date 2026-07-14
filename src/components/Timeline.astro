@@ -1,0 +1,38 @@
+---
+import { Radio, Sprout } from "@lucide/astro";
+import { timeline } from "../data/site";
+---
+
+<section id="timeline" class="section timeline-section" aria-labelledby="timeline-heading">
+  <div class="shell section-heading-grid">
+    <div>
+      <p class="eyebrow">Open roadmap · 公開路線圖</p>
+      <h2 id="timeline-heading">從籌備開始，<br />一起走到年會。</h2>
+    </div>
+    <p class="section-lede">籌備從來不只發生在活動當天。這份時程讓每個想參與的人，都知道下一步會在哪裡發生。</p>
+  </div>
+
+  <div class="shell timeline-list">
+    {timeline.map((item, index) => (
+      <article class:list={["timeline-row", item.status]}>
+        <div class="timeline-date">
+          <span>{item.date}</span>
+          {item.tentative && <small>預計</small>}
+        </div>
+        <div class="timeline-marker" aria-hidden="true">
+          {item.status === "event" ? <Sprout size={20} /> : <Radio size={18} />}
+        </div>
+        <div class="timeline-copy">
+          <span class="timeline-index">{String(index + 1).padStart(2, "0")}</span>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="shell disclaimer">
+    <span aria-hidden="true">＊</span>
+    <p>以下時程為目前預期資訊，實際安排以 SITCON 官方公告為準。</p>
+  </div>
+</section>

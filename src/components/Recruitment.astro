@@ -1,0 +1,75 @@
+---
+import { ArrowUpRight } from "@lucide/astro";
+import { recruitmentTeams, siteConfig } from "../data/site";
+
+const assetBase = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+---
+
+<section id="join" class="section join-section" aria-labelledby="join-heading">
+  <div class="shell join-intro">
+    <div>
+      <p class="eyebrow">Join the crew · 一起籌備</p>
+      <h2 id="join-heading">你不必準備好，<br />才有資格加入。</h2>
+    </div>
+    <div class="join-copy">
+      <p>SITCON 由學生自發籌辦。這裡需要的不只是技術，也需要能溝通、能整理、願意觀察，或只是很想把一件事做好的你。</p>
+      <p>先留下聯絡方式，正式招募開放時，我們會把消息送到你手上。</p>
+    </div>
+  </div>
+
+  <div class="shell team-grid" aria-label="預計招募組別">
+    {recruitmentTeams.map((team) => (
+      <article class="team-card">
+        <a
+          class="team-card-main"
+          href={siteConfig.preJumpForm.url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${team.name}：前往 SITCON 2027 預約跳坑表單`}
+        >
+          <div class="team-card-media">
+            <img src={`${assetBase}${team.image}`} alt={team.imageAlt} loading="lazy" decoding="async" />
+          </div>
+          <div class="team-card-detail">
+            <h3>{team.name}</h3>
+            <p>{team.details}</p>
+          </div>
+        </a>
+      </article>
+    ))}
+    <article class="team-card team-card-more">
+      <a
+        class="team-card-main"
+        href={siteConfig.preJumpForm.url}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="還不確定組別：前往 SITCON 2027 預約跳坑表單"
+      >
+        <div class="team-card-media">
+          <img
+            src={`${assetBase}assets/recruitment/find-your-team.jpg`}
+            alt="SITCON Camp 工作人員在戶外集合拍團體照"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="team-card-detail">
+          <h3>還不確定？</h3>
+          <p>填表時填「還不確定，想了解更多」，我們會協助你找到適合的位置。</p>
+        </div>
+      </a>
+    </article>
+  </div>
+
+  <div class="shell join-action">
+    <div class="join-action-label">
+      <span>PRE-JOIN FORM</span>
+      <small>SITCON 2027</small>
+    </div>
+    <a class="giant-link" href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">
+      提前跳坑
+      <ArrowUpRight size={48} stroke-width={1.5} aria-hidden="true" />
+    </a>
+    <p>先留下聯絡方式，工作人員招募資訊公開時就能搶先收到通知。</p>
+  </div>
+</section>

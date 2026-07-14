@@ -1,0 +1,98 @@
+---
+import { ArrowDown, ArrowUpRight, CalendarDays, MapPin } from "@lucide/astro";
+import About from "../components/About.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Recruitment from "../components/Recruitment.astro";
+import SignalGarden from "../components/SignalGarden.astro";
+import Timeline from "../components/Timeline.astro";
+import { siteConfig } from "../data/site";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <Header />
+  <main id="main-content">
+    <section id="top" class="hero" aria-labelledby="hero-heading">
+      <div class="hero-photo" aria-hidden="true">
+        <img
+          src="assets/sitcon-2026-crew.jpg"
+          alt=""
+          width="2048"
+          height="1365"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <div class="hero-mask" aria-hidden="true"></div>
+      <SignalGarden />
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="shell hero-inner">
+        <div class="hero-content">
+          <div class="hero-title-wrap">
+            <h1 id="hero-heading">SITCON<br />2027</h1>
+          </div>
+          <div class="hero-side">
+            <p class="hero-theme">{siteConfig.tagline}</p>
+            <p>SITCON 由學生自發籌辦。現在加入籌備團隊，和我們一起把想法變成明年的年會現場。</p>
+            <a class="primary-button" href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">
+              提前跳坑
+              <ArrowUpRight size={20} stroke-width={2.3} aria-hidden="true" />
+            </a>
+            <span class="button-note">SITCON 2027 工作人員預約登記</span>
+          </div>
+        </div>
+
+        <div class="event-strip">
+          <div class="event-date">
+            <CalendarDays size={20} stroke-width={1.8} aria-hidden="true" />
+            <span class="event-info"><small>年會日期</small><strong>{siteConfig.dateDisplay}</strong></span>
+          </div>
+          <div class="event-place">
+            <MapPin size={20} stroke-width={1.8} aria-hidden="true" />
+            <span class="event-info"><small>地點</small><strong>{siteConfig.venue}</strong></span>
+          </div>
+          <div class="countdown" data-countdown data-target={siteConfig.startDate} aria-live="polite">
+            <span><strong data-days>---</strong><small>Days</small></span>
+            <span><strong data-hours>--</strong><small>Hours</small></span>
+            <span><strong data-minutes>--</strong><small>Mins</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <a class="next-band" href="#timeline">
+      <span>持續更新</span>
+      <strong>查看籌備時程</strong>
+      <ArrowDown size={23} aria-hidden="true" />
+    </a>
+
+    <Timeline />
+    <Recruitment />
+    <About />
+  </main>
+  <Footer />
+
+  <script>
+    const countdown = document.querySelector<HTMLElement>("[data-countdown]");
+    const target = countdown?.dataset.target ? new Date(countdown.dataset.target).getTime() : 0;
+
+    const updateCountdown = () => {
+      if (!countdown || !target) return;
+      const remaining = Math.max(0, target - Date.now());
+      const days = Math.floor(remaining / 86_400_000);
+      const hours = Math.floor((remaining % 86_400_000) / 3_600_000);
+      const minutes = Math.floor((remaining % 3_600_000) / 60_000);
+      const dayNode = countdown.querySelector("[data-days]");
+      const hourNode = countdown.querySelector("[data-hours]");
+      const minuteNode = countdown.querySelector("[data-minutes]");
+      if (dayNode) dayNode.textContent = String(days).padStart(3, "0");
+      if (hourNode) hourNode.textContent = String(hours).padStart(2, "0");
+      if (minuteNode) minuteNode.textContent = String(minutes).padStart(2, "0");
+    };
+
+    updateCountdown();
+    window.setInterval(updateCountdown, 60_000);
+  </script>
+</Layout>

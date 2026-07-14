@@ -1,0 +1,75 @@
+---
+import "../styles/global.css";
+import { siteConfig } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${siteConfig.name}｜${siteConfig.status}`,
+  description = `${siteConfig.fullName} 將於 ${siteConfig.dateDisplay} 在${siteConfig.venue}舉行。查看籌備時程、招募預告並提前跳坑。`,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const eventJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: siteConfig.fullName,
+  description,
+  startDate: siteConfig.startDate,
+  endDate: siteConfig.endDate,
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: {
+    "@type": "Place",
+    name: siteConfig.venue,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "研究院路二段 128 號",
+      addressLocality: "南港區",
+      addressRegion: "臺北市",
+      addressCountry: "TW",
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: "SITCON 學生計算機年會",
+    url: "https://sitcon.org",
+  },
+};
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#101312" />
+    <meta name="description" content={description} />
+    <meta name="author" content="SITCON" />
+    <meta name="keywords" content="SITCON, SITCON 2027, 學生計算機年會, 開源, 學生社群" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="SITCON" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL("og-card.png", Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL("og-card.png", Astro.site)} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <title>{title}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(eventJsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳至主要內容</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#101312"/>
+  <g stroke="#f2efe5" stroke-opacity=".12">
+    <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200"/>
+    <path d="M100 0v630M200 0v630M300 0v630M400 0v630M500 0v630M600 0v630M700 0v630M800 0v630M900 0v630M1000 0v630M1100 0v630"/>
+  </g>
+  <g fill="none" stroke-width="4">
+    <path d="M960 530V315l-70-62M960 420l88-70" stroke="#c9ff3d"/>
+    <path d="M1080 560V430l55-50" stroke="#ff625b"/>
+  </g>
+  <g fill="#c9ff3d"><rect x="952" y="307" width="16" height="16"/><rect x="882" y="245" width="16" height="16"/><rect x="1040" y="342" width="16" height="16"/></g>
+  <g fill="#ff625b"><rect x="1072" y="422" width="16" height="16"/><rect x="1127" y="372" width="16" height="16"/></g>
+  <text x="72" y="118" fill="#c9ff3d" font-family="monospace" font-size="24">BUILT BY STUDENTS, FOR STUDENTS.</text>
+  <text x="68" y="330" fill="#f2efe5" font-family="Arial, sans-serif" font-size="152" font-weight="900">SITCON 2027</text>
+  <text x="74" y="412" fill="#f2efe5" font-family="Arial, sans-serif" font-size="44" font-weight="700">一起做出 SITCON 2027</text>
+  <rect x="72" y="492" width="360" height="68" fill="#c9ff3d"/>
+  <text x="96" y="539" fill="#101312" font-family="monospace" font-size="28" font-weight="700">2027.03.13 · TAIPEI</text>
+</svg>

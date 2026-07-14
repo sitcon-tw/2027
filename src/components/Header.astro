@@ -1,0 +1,66 @@
+---
+import { ArrowUpRight, Menu, X } from "@lucide/astro";
+import { siteConfig } from "../data/site";
+---
+
+<header class="site-header" data-header>
+  <div class="shell header-inner">
+    <a class="brand" href="#top" aria-label="SITCON 2027 首頁">
+      <img src="assets/sitcon-white.svg" alt="SITCON" width="140" height="40" />
+      <span>2027</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="主要導覽">
+      <a href="#timeline">籌備時程</a>
+      <a href="#join">加入籌備</a>
+      <a href="#about">關於 SITCON</a>
+    </nav>
+
+    <a class="header-cta" href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">
+      提前跳坑
+      <ArrowUpRight size={17} stroke-width={2.4} aria-hidden="true" />
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="開啟選單">
+      <Menu class="menu-open-icon" size={24} aria-hidden="true" />
+      <X class="menu-close-icon" size={24} aria-hidden="true" />
+    </button>
+  </div>
+
+  <nav id="mobile-menu" class="mobile-nav" aria-label="行動版導覽" hidden>
+    <a href="#timeline">籌備時程</a>
+    <a href="#join">加入籌備</a>
+    <a href="#about">關於 SITCON</a>
+    <a href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">提前跳坑</a>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const menu = document.querySelector<HTMLElement>("#mobile-menu");
+
+  const closeMenu = () => {
+    if (!toggle || !menu) return;
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "開啟選單");
+    menu.hidden = true;
+    document.body.classList.remove("menu-is-open");
+  };
+
+  toggle?.addEventListener("click", () => {
+    if (!menu) return;
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+    toggle.setAttribute("aria-label", isOpen ? "開啟選單" : "關閉選單");
+    menu.hidden = isOpen;
+    document.body.classList.toggle("menu-is-open", !isOpen);
+  });
+
+  menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+
+  window.addEventListener("scroll", () => header?.classList.toggle("is-scrolled", window.scrollY > 16), { passive: true });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 800) closeMenu();
+  });
+</script>
