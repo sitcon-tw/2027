@@ -1,5 +1,7 @@
 ---
+import { Picture } from "astro:assets";
 import { ArrowDown, ArrowUpRight, CalendarDays, MapPin } from "@lucide/astro";
+import heroImage from "../assets/sitcon-2026-crew.jpg";
 import About from "../components/About.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
@@ -15,11 +17,12 @@ import Layout from "../layouts/Layout.astro";
   <main id="main-content">
     <section id="top" class="hero" aria-labelledby="hero-heading">
       <div class="hero-photo" aria-hidden="true">
-        <img
-          src="assets/sitcon-2026-crew.jpg"
+        <Picture
+          src={heroImage}
           alt=""
-          width="2048"
-          height="1365"
+          formats={["avif", "webp"]}
+          widths={[640, 960, 1280, 1600, 2048]}
+          sizes="100vw"
           loading="eager"
           fetchpriority="high"
           decoding="async"

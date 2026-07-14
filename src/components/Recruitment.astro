@@ -1,8 +1,12 @@
 ---
+import { Picture } from "astro:assets";
 import { ArrowUpRight } from "@lucide/astro";
+import findYourTeamImage from "../assets/recruitment/find-your-team.jpg";
 import { recruitmentTeams, siteConfig } from "../data/site";
 
-const assetBase = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
+const teamImageWidths = [320, 480, 640, 960];
+const teamImageSizes =
+  "(max-width: 520px) calc(100vw - 32px), (max-width: 800px) calc((100vw - 32px) / 2), (max-width: 980px) calc((100vw - 48px) / 2), 320px";
 ---
 
 <section id="join" class="section join-section" aria-labelledby="join-heading">
@@ -28,7 +32,15 @@ const assetBase = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
           aria-label={`${team.name}：前往 SITCON 2027 預約跳坑表單`}
         >
           <div class="team-card-media">
-            <img src={`${assetBase}${team.image}`} alt={team.imageAlt} loading="lazy" decoding="async" />
+            <Picture
+              src={team.image}
+              alt={team.imageAlt}
+              formats={["avif", "webp"]}
+              widths={teamImageWidths}
+              sizes={teamImageSizes}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
           <div class="team-card-detail">
             <h3>{team.name}</h3>
@@ -46,9 +58,12 @@ const assetBase = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/`;
         aria-label="還不確定組別：前往 SITCON 2027 預約跳坑表單"
       >
         <div class="team-card-media">
-          <img
-            src={`${assetBase}assets/recruitment/find-your-team.jpg`}
+          <Picture
+            src={findYourTeamImage}
             alt="SITCON Camp 工作人員在戶外集合拍團體照"
+            formats={["avif", "webp"]}
+            widths={teamImageWidths}
+            sizes={teamImageSizes}
             loading="lazy"
             decoding="async"
           />

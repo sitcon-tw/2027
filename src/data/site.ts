@@ -1,3 +1,16 @@
+import type { ImageMetadata } from "astro";
+import activityImage from "../assets/recruitment/activity.jpg";
+import administrationImage from "../assets/recruitment/administration.jpg";
+import agendaImage from "../assets/recruitment/agenda.jpg";
+import coordinatorImage from "../assets/recruitment/coordinator.jpg";
+import designImage from "../assets/recruitment/design.jpg";
+import developmentImage from "../assets/recruitment/development.jpg";
+import editingImage from "../assets/recruitment/editing.jpg";
+import marketingImage from "../assets/recruitment/marketing.jpg";
+import productionImage from "../assets/recruitment/production.jpg";
+import recordImage from "../assets/recruitment/record.jpg";
+import venueImage from "../assets/recruitment/venue.jpg";
+
 export interface TimelineItem {
   date: string;
   sortDate: string;
@@ -23,7 +36,7 @@ export interface RecruitmentTeam {
     | "marketing";
   description: string;
   details: string;
-  image: string;
+  image: ImageMetadata;
   imageAlt: string;
   photoUrl: string;
 }
@@ -124,7 +137,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "coordinator",
     description: "串起方向、決策與每一個籌備組別。",
     details: "統整年會目標、時程與跨組協作，協助團隊做決策、排除阻礙，讓所有工作朝同一方向前進。",
-    image: "assets/recruitment/coordinator.jpg",
+    image: coordinatorImage,
     imageAlt: "SITCON 2026 工作人員在會場入口引導與協調",
     photoUrl: "https://www.flickr.com/photos/sitcon/55245144317",
   },
@@ -133,7 +146,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "administration",
     description: "把資訊、人與資源安放在正確的位置。",
     details: "維護籌備文件與跨組資訊，也負責財務管理、預算與報帳流程，讓每筆資源都清楚可追蹤。",
-    image: "assets/recruitment/administration.jpg",
+    image: administrationImage,
     imageAlt: "SITCON 2026 工作人員在報到桌遞交紙本資料",
     photoUrl: "https://www.flickr.com/photos/sitcon/55246174900",
   },
@@ -142,7 +155,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "agenda",
     description: "規劃徵稿、講者與年會的知識脈絡。",
     details: "從徵稿辦法、稿件審查到講者聯繫，和團隊一起梳理議程主題與分享節奏。",
-    image: "assets/recruitment/agenda.jpg",
+    image: agendaImage,
     imageAlt: "SITCON 講者在階梯教室向會眾分享",
     photoUrl: "https://www.flickr.com/photos/sitcon/25467227761",
   },
@@ -151,7 +164,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "activity",
     description: "設計讓參與者投入其中的交流體驗。",
     details: "規劃會前與年會中的互動活動，負責流程、主持與現場執行，讓參與者更容易認識彼此。",
-    image: "assets/recruitment/activity.jpg",
+    image: activityImage,
     imageAlt: "SITCON 2026 工作人員拿著麥克風帶領參與者互動",
     photoUrl: "https://www.flickr.com/photos/sitcon/55250534728",
   },
@@ -160,7 +173,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "venue",
     description: "讓現場動線、空間與每個細節順利運作。",
     details: "規劃場地配置、報到與人流動線，協調設備與臨場支援，確保活動穩定運作。",
-    image: "assets/recruitment/venue.jpg",
+    image: venueImage,
     imageAlt: "多位 SITCON 工作人員在走廊搬運折疊桌與椅子",
     photoUrl: "https://www.flickr.com/photos/sitcon/50258288467",
   },
@@ -169,7 +182,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "design",
     description: "把年度概念轉化成一致而鮮明的視覺。",
     details: "建立年度視覺系統，延伸到網站、社群與會場物件，讓每個接觸點保持一致。",
-    image: "assets/recruitment/design.jpg",
+    image: designImage,
     imageAlt: "SITCON Camp 參與者在白板上畫圖",
     photoUrl: "https://www.flickr.com/photos/sitcon/55383671611",
   },
@@ -178,7 +191,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "record",
     description: "保存影像、文字與社群共同完成的軌跡。",
     details: "由靜態與動態夥伴拍攝、整理年會影像，讓每場分享與共同記憶都能被完整保存。",
-    image: "assets/recruitment/record.jpg",
+    image: recordImage,
     imageAlt: "SITCON Camp 攝影工作人員在戶外取景",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388194816",
   },
@@ -187,7 +200,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "production",
     description: "把現場內容穩定送到螢幕與線上。",
     details: "負責議程直播、導播、音訊與監看設備，和場務及議程協作，讓每一場分享順利播出。",
-    image: "assets/recruitment/production.jpg",
+    image: productionImage,
     imageAlt: "SITCON 2026 製播工作人員戴耳機操作監看與控制設備",
     photoUrl: "https://www.flickr.com/photos/sitcon/55244847992",
   },
@@ -196,7 +209,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "development",
     description: "打造官網、票務與籌備需要的數位工具。",
     details: "開發與維護官網、報名與內部工具，將籌備需求轉成可靠、好用的數位服務。",
-    image: "assets/recruitment/development.jpg",
+    image: developmentImage,
     imageAlt: "參與者在筆電上操作終端機程式",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388594180",
   },
@@ -205,7 +218,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "editing",
     description: "把年會資訊整理成清楚、準確的內容。",
     details: "負責社群文案、公告與對外公關內容，和設計協作，把議程、活動與重要資訊說清楚。",
-    image: "assets/recruitment/editing.jpg",
+    image: editingImage,
     imageAlt: "SITCON 2025 工作人員在桌邊手寫紙卡",
     photoUrl: "https://www.flickr.com/photos/sitcon/54478181675",
   },
@@ -214,7 +227,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     icon: "marketing",
     description: "讓 SITCON 與更多學生和社群相遇。",
     details: "規劃宣傳策略、校園與社群合作及推廣節奏，讓年會資訊抵達更多可能參與的人。",
-    image: "assets/recruitment/marketing.jpg",
+    image: marketingImage,
     imageAlt: "社群攤位工作人員與參與者交談",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388577255",
   },
