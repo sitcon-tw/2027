@@ -4,7 +4,6 @@
   const canvas = document.querySelector<HTMLCanvasElement>("[data-signal-trees]");
   const context = canvas?.getContext("2d");
   const eventStrip = document.querySelector<HTMLElement>(".event-strip");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   let animationId = 0;
   let startedAt = 0;
@@ -61,21 +60,16 @@
     const canvasTop = canvas.getBoundingClientRect().top;
     const stripTop = eventStrip?.getBoundingClientRect().top;
     const baseY = stripTop ? stripTop - canvasTop : height - 24;
-    const elapsed = reduceMotion.matches ? 2_000 : timestamp - startedAt;
+    const elapsed = timestamp - startedAt;
     const largeTree = Math.min(72, Math.max(44, width * 0.07));
 
     context.clearRect(0, 0, width, height);
-    context.beginPath();
-    context.strokeStyle = "rgba(242, 239, 229, 0.22)";
-    context.lineWidth = 1;
-    drawSegment(width * 0.56, baseY, width * 0.96, baseY, elapsed / 650);
-    context.stroke();
 
     drawTree(width * 0.66, baseY, largeTree, "#c9ff3d", clamp(elapsed / 1_050));
     drawTree(width * 0.8, baseY, largeTree * 0.72, "#ff625b", clamp((elapsed - 180) / 950));
     drawTree(width * 0.91, baseY, largeTree * 0.54, "#7d88ff", clamp((elapsed - 340) / 850));
 
-    if (!reduceMotion.matches && elapsed < 1_300) {
+    if (elapsed < 1_300) {
       animationId = window.requestAnimationFrame(draw);
     }
   };
