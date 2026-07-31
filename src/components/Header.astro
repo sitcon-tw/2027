@@ -1,12 +1,14 @@
 ---
 import { ArrowUpRight, Menu, X } from "@lucide/astro";
 import { siteConfig } from "../data/site";
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <header class="site-header" data-header>
   <div class="shell header-inner">
     <a class="brand" href="#top" aria-label="SITCON 2027 首頁">
-      <img src="assets/sitcon-white.svg" alt="SITCON" width="140" height="40" />
+      <img src={`${baseUrl}/assets/sitcon-white.svg`} alt="SITCON" width="140" height="40" />
       <span>2027</span>
     </a>
 
@@ -16,8 +18,8 @@ import { siteConfig } from "../data/site";
       <a href="#about">關於 SITCON</a>
     </nav>
 
-    <a class="header-cta" href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">
-      提前跳坑
+    <a class="header-cta" href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">
+      工作人員招募
       <ArrowUpRight size={17} stroke-width={2.4} aria-hidden="true" />
     </a>
 
@@ -31,7 +33,7 @@ import { siteConfig } from "../data/site";
     <a href="#timeline">籌備時程</a>
     <a href="#join">加入籌備</a>
     <a href="#about">關於 SITCON</a>
-    <a href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">提前跳坑</a>
+    <a href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">工作人員招募</a>
   </nav>
 </header>
 

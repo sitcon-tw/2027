@@ -1,12 +1,19 @@
 ---
 import { Picture } from "astro:assets";
-import { ArrowUpRight } from "@lucide/astro";
+import { ArrowUpRight, X } from "@lucide/astro";
 import findYourTeamImage from "../assets/recruitment/find-your-team.jpg";
 import { recruitmentTeams, siteConfig } from "../data/site";
 
 const teamImageWidths = [320, 480, 640, 960];
 const teamImageSizes =
   "(max-width: 520px) calc(100vw - 32px), (max-width: 800px) calc((100vw - 32px) / 2), (max-width: 980px) calc((100vw - 48px) / 2), 320px";
+
+const getRecruitmentUrl = (team: (typeof recruitmentTeams)[number]) =>
+  team.recruitment.type === "form"
+    ? team.recruitment.url
+    : team.recruitment.type === "overview"
+      ? siteConfig.recruitment.overviewUrl
+      : undefined;
 ---
 
 <section id="join" class="section join-section" aria-labelledby="join-heading">
@@ -17,45 +24,65 @@ const teamImageSizes =
     </div>
     <div class="join-copy">
       <p>SITCON 由學生自發籌辦。這裡需要的不只是技術，也需要能溝通、能整理、願意觀察，或只是很想把一件事做好的你。</p>
-      <p>先留下聯絡方式，正式招募開放時，我們會把消息送到你手上。</p>
+      <p>各組的工作內容、招募條件與截止日期不同，請查看完整資訊並選擇適合你的組別。</p>
     </div>
   </div>
 
-  <div class="shell team-grid" aria-label="預計招募組別">
-    {recruitmentTeams.map((team) => (
-      <article class="team-card">
-        <a
-          class="team-card-main"
-          href={siteConfig.preJumpForm.url}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${team.name}：前往 SITCON 2027 預約跳坑表單`}
-        >
-          <div class="team-card-media">
-            <Picture
-              src={team.image}
-              alt={team.imageAlt}
-              formats={["avif", "webp"]}
-              widths={teamImageWidths}
-              sizes={teamImageSizes}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div class="team-card-detail">
-            <h3>{team.name}</h3>
-            <p>{team.details}</p>
-          </div>
-        </a>
-      </article>
-    ))}
+  <div class="shell team-grid" aria-label="工作人員招募組別">
+    {
+      recruitmentTeams.map((team) => {
+        const dialogId = `recruitment-dialog-${team.icon}`;
+        const hasRecruitmentDetails = Boolean(
+          team.recruitmentDetails && team.recruitment.type !== "none",
+        );
+
+        return (
+          <article class:list={["team-card", { "team-card-clickable": hasRecruitmentDetails }]}>
+            <div class="team-card-main">
+              <div class="team-card-media">
+                <Picture
+                  src={team.image}
+                  alt={team.imageAlt}
+                  formats={["avif", "webp"]}
+                  widths={teamImageWidths}
+                  sizes={teamImageSizes}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="team-card-detail">
+                <h3>{team.name}</h3>
+                <p>{team.details}</p>
+              </div>
+            </div>
+            {
+              hasRecruitmentDetails && (
+                <>
+                  <span class="team-card-hint" aria-hidden="true">
+                    查看詳情
+                    <ArrowUpRight size={14} stroke-width={2.4} />
+                  </span>
+                  <button
+                    type="button"
+                    class="team-card-link"
+                    aria-label={`查看${team.name}詳細招募資訊`}
+                    aria-haspopup="dialog"
+                    data-recruitment-dialog-open={dialogId}
+                  />
+                </>
+              )
+            }
+          </article>
+        );
+      })
+    }
     <article class="team-card team-card-more">
       <a
         class="team-card-main"
-        href={siteConfig.preJumpForm.url}
+        href={siteConfig.recruitment.overviewUrl}
         target="_blank"
         rel="noreferrer"
-        aria-label="還不確定組別：前往 SITCON 2027 預約跳坑表單"
+        aria-label="查看 SITCON 2027 工作人員完整招募資訊"
       >
         <div class="team-card-media">
           <Picture
@@ -70,21 +97,141 @@ const teamImageSizes =
         </div>
         <div class="team-card-detail">
           <h3>還不確定？</h3>
-          <p>填表時填「還不確定，想了解更多」，我們會協助你找到適合的位置。</p>
+          <p>先看看各組的工作內容與推薦條件，找到最適合你的參與方式。</p>
         </div>
       </a>
     </article>
   </div>
 
+  {
+    recruitmentTeams.map((team) => {
+      const details = team.recruitmentDetails;
+      const recruitmentUrl = getRecruitmentUrl(team);
+      if (!details || !recruitmentUrl) return null;
+
+      const dialogId = `recruitment-dialog-${team.icon}`;
+      const titleId = `${dialogId}-title`;
+      const descriptionId = `${dialogId}-description`;
+      const actionLabel =
+        team.recruitment.type === "form"
+          ? `前往${team.name}招募表單`
+          : "前往 HackMD 查看最新資訊";
+
+      return (
+        <dialog
+          id={dialogId}
+          class="recruitment-dialog"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+        >
+          <div class="recruitment-dialog-panel">
+            <header class="recruitment-dialog-header">
+              <div>
+                <p class="eyebrow">Team recruitment · 組別招募</p>
+                <h2 id={titleId}>{team.name}</h2>
+                <p id={descriptionId}>{team.description}</p>
+              </div>
+              <form method="dialog">
+                <button class="recruitment-dialog-close" type="submit" aria-label={`關閉${team.name}詳細資訊`}>
+                  <X size={24} aria-hidden="true" />
+                </button>
+              </form>
+            </header>
+
+            <dl class="recruitment-dialog-meta">
+              <div>
+                <dt>招募截止</dt>
+                <dd>{details.deadline}</dd>
+              </div>
+              <div>
+                <dt>預計人數</dt>
+                <dd>{details.headcount}</dd>
+              </div>
+            </dl>
+
+            <div class="recruitment-dialog-content" tabindex="0" aria-label={`${team.name}詳細招募內容`}>
+              {
+                details.sections.map((section) => (
+                  <section>
+                    <h3>{section.title}</h3>
+                    {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+                    {
+                      section.items && (
+                        <ul>
+                          {section.items.map((item) => <li>{item}</li>)}
+                        </ul>
+                      )
+                    }
+                  </section>
+                ))
+              }
+
+              {
+                details.contacts && details.contacts.length > 0 && (
+                  <section>
+                    <h3>聯絡方式</h3>
+                    <nav class="recruitment-dialog-contacts" aria-label={`${team.name}聯絡方式`}>
+                      {details.contacts.map((contact) => (
+                        <a href={contact.url} target="_blank" rel="noreferrer">{contact.label}</a>
+                      ))}
+                    </nav>
+                  </section>
+                )
+              }
+            </div>
+
+            <footer class="recruitment-dialog-footer">
+              <a href={recruitmentUrl} target="_blank" rel="noreferrer">
+                {actionLabel}
+                <ArrowUpRight size={20} aria-hidden="true" />
+              </a>
+            </footer>
+          </div>
+        </dialog>
+      );
+    })
+  }
+
   <div class="shell join-action">
     <div class="join-action-label">
-      <span>PRE-JOIN FORM</span>
+      <span>CREW RECRUITMENT</span>
       <small>SITCON 2027</small>
     </div>
-    <a class="giant-link" href={siteConfig.preJumpForm.url} target="_blank" rel="noreferrer">
-      提前跳坑
+    <a class="giant-link" href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">
+      查看招募資訊
       <ArrowUpRight size={48} stroke-width={1.5} aria-hidden="true" />
     </a>
-    <p>先留下聯絡方式，工作人員招募資訊公開時就能搶先收到通知。</p>
+    <p>各組工作內容、招募條件、截止日期與表單，請以完整招募資訊的最新公告為準。</p>
   </div>
 </section>
+
+<script>
+  const recruitmentDialogTriggers = document.querySelectorAll<HTMLButtonElement>(
+    "[data-recruitment-dialog-open]",
+  );
+  const recruitmentDialogs = document.querySelectorAll<HTMLDialogElement>(".recruitment-dialog");
+  const dialogTriggers = new WeakMap<HTMLDialogElement, HTMLButtonElement>();
+
+  recruitmentDialogTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const dialogId = trigger.dataset.recruitmentDialogOpen;
+      const dialog = dialogId ? document.getElementById(dialogId) : null;
+      if (!(dialog instanceof HTMLDialogElement)) return;
+
+      dialogTriggers.set(dialog, trigger);
+      dialog.showModal();
+      document.body.classList.add("dialog-is-open");
+    });
+  });
+
+  recruitmentDialogs.forEach((dialog) => {
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {
+      document.body.classList.remove("dialog-is-open");
+      dialogTriggers.get(dialog)?.focus();
+    });
+  });
+</script>

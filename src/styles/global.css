@@ -626,6 +626,41 @@ canvas {
   overflow: hidden;
 }
 
+.team-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.team-card-hint {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 9px;
+  color: var(--paper);
+  background: rgba(16, 19, 18, 0.82);
+  border: 1px solid rgba(242, 239, 229, 0.28);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.team-card-link:focus-visible,
 .team-card-main:focus-visible {
   z-index: 1;
   outline: 2px solid var(--acid);
@@ -670,6 +705,22 @@ canvas {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.team-card-clickable:hover .team-card-media img,
+.team-card-clickable:focus-within .team-card-media img {
+  filter: brightness(0.72);
+  transform: scale(1.035);
+}
+
+.team-card-clickable:hover .team-card-hint,
+.team-card-clickable:focus-within .team-card-hint {
+  color: var(--ink);
+  background: var(--acid);
+  border-color: var(--acid);
 }
 
 .team-card-detail {
@@ -677,6 +728,214 @@ canvas {
   inset: auto 0 0;
   padding: 56px 20px 18px;
   background: linear-gradient(to bottom, transparent, var(--ink-soft) 48px);
+}
+
+body.dialog-is-open {
+  overflow: hidden;
+}
+
+.recruitment-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(760px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(86vh, 860px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  color: var(--paper);
+  background: var(--ink-soft);
+  border: 1px solid rgba(242, 239, 229, 0.22);
+}
+
+.recruitment-dialog::backdrop {
+  background: rgba(8, 10, 9, 0.82);
+  backdrop-filter: blur(5px);
+}
+
+.recruitment-dialog-panel {
+  display: flex;
+  flex-direction: column;
+  max-height: min(86vh, 860px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.recruitment-dialog-header {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 34px 36px 30px;
+  background:
+    linear-gradient(135deg, rgba(201, 255, 61, 0.11), transparent 52%),
+    var(--ink-soft);
+  border-bottom: 1px solid var(--line-light);
+}
+
+.recruitment-dialog-header .eyebrow {
+  margin-bottom: 14px;
+  color: var(--acid);
+}
+
+.recruitment-dialog-header h2 {
+  margin: 0;
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1.08;
+}
+
+.recruitment-dialog-header > div > p:last-child {
+  max-width: 570px;
+  margin: 14px 0 0;
+  color: rgba(242, 239, 229, 0.7);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.recruitment-dialog-close {
+  display: grid;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid var(--line-light);
+  cursor: pointer;
+}
+
+.recruitment-dialog-close:hover {
+  color: var(--ink);
+  background: var(--acid);
+  border-color: var(--acid);
+}
+
+.recruitment-dialog-close:focus-visible,
+.recruitment-dialog-footer a:focus-visible,
+.recruitment-dialog-contacts a:focus-visible {
+  outline: 2px solid var(--acid);
+  outline-offset: 3px;
+}
+
+.recruitment-dialog-meta {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.recruitment-dialog-meta > div {
+  padding: 18px 36px;
+}
+
+.recruitment-dialog-meta > div + div {
+  border-left: 1px solid var(--line-light);
+}
+
+.recruitment-dialog-meta dt {
+  margin-bottom: 5px;
+  color: rgba(242, 239, 229, 0.5);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.recruitment-dialog-meta dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.recruitment-dialog-content {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 34px;
+  min-height: 0;
+  padding: 34px 36px 42px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.recruitment-dialog-content section {
+  margin: 0;
+}
+
+.recruitment-dialog-content h3 {
+  margin: 0 0 14px;
+  color: var(--acid);
+  font-size: 19px;
+}
+
+.recruitment-dialog-content section > p {
+  margin: 0;
+  color: rgba(242, 239, 229, 0.78);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.recruitment-dialog-content section > p + p,
+.recruitment-dialog-content section > p + ul {
+  margin-top: 10px;
+}
+
+.recruitment-dialog-content ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-left: 1.25em;
+  color: rgba(242, 239, 229, 0.78);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.recruitment-dialog-content li::marker {
+  color: var(--coral);
+}
+
+.recruitment-dialog-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recruitment-dialog-contacts a {
+  padding: 8px 10px;
+  color: rgba(242, 239, 229, 0.8);
+  border: 1px solid var(--line-light);
+  font-size: 12px;
+}
+
+.recruitment-dialog-contacts a:hover {
+  color: var(--acid);
+  border-color: var(--acid);
+}
+
+.recruitment-dialog-footer {
+  flex: 0 0 auto;
+  padding: 18px 36px;
+  background: rgba(20, 24, 22, 0.96);
+  border-top: 1px solid var(--line-light);
+  backdrop-filter: blur(10px);
+}
+
+.recruitment-dialog-footer a {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  color: var(--ink);
+  background: var(--acid);
+  font-weight: 900;
+}
+
+.recruitment-dialog-footer a:hover {
+  background: var(--paper);
 }
 
 .join-action {
@@ -1220,8 +1479,53 @@ canvas {
     height: 244px;
   }
 
+  .recruitment-dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+  }
+
+  .recruitment-dialog-panel {
+    max-height: calc(100dvh - 20px);
+  }
+
+  .recruitment-dialog-header {
+    gap: 16px;
+    padding: 24px 20px 22px;
+  }
+
+  .recruitment-dialog-header h2 {
+    font-size: 34px;
+  }
+
+  .recruitment-dialog-close {
+    width: 40px;
+    height: 40px;
+  }
+
+  .recruitment-dialog-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .recruitment-dialog-meta > div {
+    padding: 14px 20px;
+  }
+
+  .recruitment-dialog-meta > div + div {
+    border-top: 1px solid var(--line-light);
+    border-left: 0;
+  }
+
+  .recruitment-dialog-content {
+    gap: 28px;
+    padding: 28px 20px 34px;
+  }
+
+  .recruitment-dialog-footer {
+    padding: 14px 20px;
+  }
+
   .giant-link {
-    font-size: 50px;
+    font-size: clamp(36px, 11vw, 50px);
   }
 
   .footer-top {

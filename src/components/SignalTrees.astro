@@ -62,12 +62,13 @@
     const baseY = stripTop ? stripTop - canvasTop : height - 24;
     const elapsed = timestamp - startedAt;
     const largeTree = Math.min(72, Math.max(44, width * 0.07));
+    const treeOffsetX = width * 0.04;
 
     context.clearRect(0, 0, width, height);
 
-    drawTree(width * 0.66, baseY, largeTree, "#c9ff3d", clamp(elapsed / 1_050));
-    drawTree(width * 0.8, baseY, largeTree * 0.72, "#ff625b", clamp((elapsed - 180) / 950));
-    drawTree(width * 0.91, baseY, largeTree * 0.54, "#7d88ff", clamp((elapsed - 340) / 850));
+    drawTree(width * 0.66 - treeOffsetX, baseY, largeTree, "#c9ff3d", clamp(elapsed / 1_050));
+    drawTree(width * 0.8 - treeOffsetX, baseY, largeTree * 0.72, "#ff625b", clamp((elapsed - 180) / 950));
+    drawTree(width * 0.91 - treeOffsetX, baseY, largeTree * 0.54, "#7d88ff", clamp((elapsed - 340) / 850));
 
     if (elapsed < 1_300) {
       animationId = window.requestAnimationFrame(draw);

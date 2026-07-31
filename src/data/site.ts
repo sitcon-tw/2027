@@ -20,6 +20,17 @@ export interface TimelineItem {
   tentative?: boolean;
 }
 
+export interface RecruitmentDetailSection {
+  title: string;
+  paragraphs?: string[];
+  items?: string[];
+}
+
+export interface RecruitmentContact {
+  label: string;
+  url: string;
+}
+
 export interface RecruitmentTeam {
   name: string;
   icon:
@@ -39,6 +50,16 @@ export interface RecruitmentTeam {
   image: ImageMetadata;
   imageAlt: string;
   photoUrl: string;
+  recruitment:
+    | { type: "form"; url: string }
+    | { type: "overview" }
+    | { type: "none" };
+  recruitmentDetails?: {
+    deadline: string;
+    headcount: string;
+    sections: RecruitmentDetailSection[];
+    contacts?: RecruitmentContact[];
+  };
 }
 
 export const siteConfig = {
@@ -57,9 +78,8 @@ export const siteConfig = {
   endDate: "2027-03-13T18:00:00+08:00",
   venue: "中央研究院人文社會科學館",
   address: "臺北市南港區研究院路二段 128 號",
-  preJumpForm: {
-    url: "https://forms.gle/qjwKhp2QAdpizGsR7",
-    isPlaceholder: false,
+  recruitment: {
+    overviewUrl: "https://hackmd.io/@SITCON/2027-recruit",
   },
   links: {
     codeOfConduct: "https://sitcon.org/code-of-conduct/",
@@ -140,51 +160,306 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     image: coordinatorImage,
     imageAlt: "SITCON 2026 工作人員在會場入口引導與協調",
     photoUrl: "https://www.flickr.com/photos/sitcon/55245144317",
+    recruitment: { type: "none" },
   },
   {
     name: "行政組",
     icon: "administration",
-    description: "把資訊、人與資源安放在正確的位置。",
-    details: "維護籌備文件與跨組資訊，也負責財務管理、預算與報帳流程，讓每筆資源都清楚可追蹤。",
+    description: "處理人事、財務與籌備行政大小事。",
+    details: "行政股負責住宿、票務、保險與行前通知；財務股管理預算、報銷、出帳及結案帳務。",
     image: administrationImage,
     imageAlt: "SITCON 2026 工作人員在報到桌遞交紙本資料",
     photoUrl: "https://www.flickr.com/photos/sitcon/55246174900",
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/bQLGvX2UsQoTVXaeA",
+    },
+    recruitmentDetails: {
+      deadline: "2026/08/15 23:59",
+      headcount: "行政股 1 人、財務股 1 人",
+      sections: [
+        {
+          title: "行政股工作內容",
+          items: [
+            "處理工作人員與會眾事務，包含住宿、票務、保險等。",
+            "所有與志工人事相關的事務都會是行政股的工作。",
+            "寄送行前信、舉辦慶功宴等。",
+          ],
+        },
+        {
+          title: "行政股推薦條件",
+          items: ["細心、負責、擅長溝通。", "熟悉 Email 與線上表單作業。"],
+        },
+        {
+          title: "財務股工作內容",
+          items: ["管理預算、報銷與出帳流程。", "編製會計報告與結案帳務。"],
+        },
+        {
+          title: "財務股推薦條件",
+          items: ["細心、理性，會使用 Excel 或記帳工具。", "可配合查帳與資金控管。"],
+        },
+      ],
+      contacts: [
+        { label: "Telegram：@yuan_tw_1111", url: "https://t.me/yuan_tw_1111" },
+        { label: "Email：me@yuan-tw.net", url: "mailto:me@yuan-tw.net" },
+      ],
+    },
   },
   {
-    name: "議程組",
+    name: "議程組與議程助理",
     icon: "agenda",
-    description: "規劃徵稿、講者與年會的知識脈絡。",
-    details: "從徵稿辦法、稿件審查到講者聯繫，和團隊一起梳理議程主題與分享節奏。",
+    description: "規劃議程內容，也照顧議程廳的現場節奏。",
+    details: "辦理徵審稿、聯繫講者、規劃主題演講與論壇；議程助理負責前導、計時、宣達及現場協調。",
     image: agendaImage,
     imageAlt: "SITCON 講者在階梯教室向會眾分享",
     photoUrl: "https://www.flickr.com/photos/sitcon/25467227761",
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/d8DxAM4qqA39TCpc7",
+    },
+    recruitmentDetails: {
+      deadline: "2026/08/17 23:59",
+      headcount: "組員 4 人、議程助理 10 人",
+      sections: [
+        {
+          title: "議程組工作內容",
+          items: [
+            "辦理徵稿與審稿，編排議程表。",
+            "聯絡稿件講者，包含蒐集議程內容授權書、更新議程資訊、調查講者飲食習慣等。",
+            "邀請合適的主題演講（Keynote）講者。",
+            "規劃、辦理論壇，並邀請合適的與談人。",
+          ],
+        },
+        {
+          title: "議程組推薦條件",
+          items: [
+            "對 SITCON 年會及各式社群活動的理念與目標，有自己的想法。",
+            "喜歡問問題、聽取其他夥伴的發言，也願意發表自己的意見。",
+            "樂於參與不同議題的反覆討論，並嘗試理解不同人的觀點。",
+            "不畏懼閱讀大量文字，包含書籍、文章、歷屆文件與信件討論。",
+            "做事時考慮周全，不遺漏狀況或細節。",
+            "主動參與約 2 至 3 週一次的議程組會議；跨組會議同樣約 2 至 3 週一次，但不強迫參加。",
+            "經常查看 Email，至少一天 2 次。",
+          ],
+        },
+        {
+          title: "議程助理工作內容",
+          items: [
+            "確認講者於議程開始前的準備狀況。",
+            "進行議程前導，並在開始後掌握時間、提醒講者。",
+            "宣達會場注意事項、議程異動與其他大會資訊。",
+            "處理議程廳內臨時狀況，並與製播、場務及議程組夥伴協調。",
+          ],
+        },
+        {
+          title: "議程助理推薦條件",
+          items: [
+            "不畏懼使用麥克風進行公開宣達及提醒講者掌握時間。",
+            "能尊重不同背景的講者及與會者，協助維持友善、安全的議程環境。",
+            "願意閱讀工作手冊與議程資訊，熟悉自己負責議程的流程及注意事項。",
+            "能留意工作群組與 Email，及時確認排班、異動與重要通知。",
+            "年會當天能配合排班及現場調度，並在無法執行工作時儘早向負責夥伴反映。",
+          ],
+        },
+        {
+          title: "FAQ：我需要擁有很紮實的資訊能力嗎？",
+          paragraphs: [
+            "自認對資訊有充分的興趣，且有持續瞭解與進步就好。比起技術實力，議程組更需要對資訊社群有熱忱、有想法的夥伴；若有足夠的資訊知識、技術能力與開發經驗，也絕對會對籌備大有幫助。",
+          ],
+        },
+        {
+          title: "FAQ：我想幫忙，但時間不夠怎麼辦？",
+          paragraphs: [
+            "我們期望加入的成員半年內有足夠的時間參與籌備。如果覺得自己可能會很忙，但依然很想加入，可以先填表單，當面聊聊你的規劃；我們不會排斥任何願意幫忙的人。",
+          ],
+        },
+        {
+          title: "FAQ：工作量會很大嗎？",
+          paragraphs: [
+            "工作會儘量以達成共識的方式分配，並以不造成大家生活壓力為前提。若你覺得工作量太大，可以向組內夥伴反映，組長會想辦法找人解決。",
+          ],
+        },
+      ],
+      contacts: [
+        { label: "Telegram：@zhan079", url: "https://t.me/zhan079" },
+        { label: "Email：sitcon-agenda@googlegroups.com", url: "mailto:sitcon-agenda@googlegroups.com" },
+      ],
+    },
   },
   {
     name: "活動組",
     icon: "activity",
-    description: "設計讓參與者投入其中的交流體驗。",
-    details: "規劃會前與年會中的互動活動，負責流程、主持與現場執行，讓參與者更容易認識彼此。",
+    description: "打造讓會眾投入其中的年會體驗。",
+    details: "發想大地遊戲、指南針、導遊團等互動企劃，規劃流程與物資，並負責現場帶領、應變及回饋整理。",
     image: activityImage,
     imageAlt: "SITCON 2026 工作人員拿著麥克風帶領參與者互動",
     photoUrl: "https://www.flickr.com/photos/sitcon/55250534728",
+    recruitment: { type: "overview" },
+    recruitmentDetails: {
+      deadline: "待公布",
+      headcount: "3–4 人",
+      sections: [
+        {
+          title: "關於活動組",
+          paragraphs: [
+            "除了精彩的議程，SITCON 還能帶給會眾什麼？今年，活動組正式獨立，希望能投入更多心力，打造屬於 SITCON 的年會體驗。",
+            "我們負責規劃年會中的各式互動企劃，從經典的大地遊戲、指南針計畫、導遊團，到更多嶄新的活動設計，希望讓每位會眾都能在 SITCON 找到屬於自己的回憶。",
+          ],
+        },
+        {
+          title: "活動企劃",
+          items: [
+            "發想活動主題與內容。",
+            "規劃活動流程、遊玩方式與體驗設計。",
+            "與組員一起腦力激盪，把想法逐步完善。",
+          ],
+        },
+        {
+          title: "互動設計",
+          items: [
+            "設計大地遊戲、闖關、交流活動等互動企劃。",
+            "思考如何提升會眾參與感與現場氛圍。",
+            "規劃指南針計畫、導遊團等交流活動。",
+          ],
+        },
+        {
+          title: "活動籌備",
+          items: [
+            "撰寫企劃書、時程安排與執行流程。",
+            "準備活動所需物資。",
+            "與其他組別協調合作，確保活動順利進行。",
+          ],
+        },
+        {
+          title: "現場執行",
+          items: [
+            "協助活動帶領與現場應變。",
+            "觀察會眾參與狀況，適時調整流程。",
+            "活動結束後整理回饋，持續優化未來企劃。",
+          ],
+        },
+        {
+          title: "我們希望你",
+          items: [
+            "喜歡發想點子，對企劃充滿熱情。",
+            "樂於與人合作，也喜歡與人交流。",
+            "願意傾聽不同意見，一起把想法打磨得更完整。",
+            "遇到突發狀況時願意一起解決問題。",
+            "不需要辦活動經驗，只要願意學習與嘗試。",
+          ],
+        },
+        {
+          title: "一起創造年會體驗",
+          paragraphs: [
+            "如果你希望親手打造一場讓數千位會眾留下深刻印象的活動，歡迎加入活動組，和我們一起創造屬於 SITCON 的年會體驗！",
+          ],
+        },
+      ],
+      contacts: [
+        { label: "Telegram：@osga24", url: "https://t.me/osga24" },
+        { label: "Email：hi@osga.dev", url: "mailto:hi@osga.dev" },
+      ],
+    },
   },
   {
     name: "場務組",
     icon: "venue",
-    description: "讓現場動線、空間與每個細節順利運作。",
-    details: "規劃場地配置、報到與人流動線，協調設備與臨場支援，確保活動穩定運作。",
+    description: "讓餐飲、報到、物流與現場支援順利運作。",
+    details: "餐飲股負責餐點挑選與運送，機動股支援各組人力，報到股檢驗門票與發放物資，物流股協調會場及倉庫物品。",
     image: venueImage,
     imageAlt: "多位 SITCON 工作人員在走廊搬運折疊桌與椅子",
     photoUrl: "https://www.flickr.com/photos/sitcon/50258288467",
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/Xfhs7qKRDCgFBUQi6",
+    },
+    recruitmentDetails: {
+      deadline: "2026 年 9 月中旬",
+      headcount: "40 人",
+      sections: [
+        {
+          title: "關於場務組",
+          paragraphs: [
+            "場務組主要負責年會當天的場地相關事務，需要有足夠熱忱，以及面對突發情況時的判斷能力。",
+            "場務組招募人數是各組中最多的，對初心者也很友善。不同股的工作內容略有不同，每個股都會有一位股長負責與組長、股員之間對接。",
+          ],
+        },
+        {
+          title: "餐飲股",
+          items: ["負責餐飲的挑選、訂購和運送。"],
+        },
+        {
+          title: "機動股",
+          items: ["在其他股或組別人力不足時協助，通常年會當天才會被頻繁使用。"],
+        },
+        {
+          title: "報到股",
+          items: ["負責報到處門票的檢驗和物品發放。"],
+        },
+        {
+          title: "物流股",
+          items: [
+            "負責物品於會場和倉庫之間的流動。",
+            "需要能與廠商聯絡的夥伴。",
+            "歡迎能搬東西、領取物資或整理倉儲的夥伴；倉庫位於臺北。",
+          ],
+        },
+        {
+          title: "推薦條件",
+          items: [
+            "年會當天一定要能出席；如果有可能無法出席，建議選擇其他組別。",
+            "擁有一顆充滿熱忱的心。",
+          ],
+        },
+        {
+          title: "還想多幫忙嗎？",
+          paragraphs: ["加入場務組後，也可以再看看其他組別；職務上通常不會衝突。"],
+        },
+      ],
+      contacts: [
+        { label: "Telegram：Each", url: "https://t.me/iach526" },
+        { label: "Email：info@iach.cc", url: "mailto:info@iach.cc" },
+      ],
+    },
   },
   {
     name: "設計組",
     icon: "design",
-    description: "把年度概念轉化成一致而鮮明的視覺。",
-    details: "建立年度視覺系統，延伸到網站、社群與會場物件，讓每個接觸點保持一致。",
+    description: "把年度概念轉化成鮮明而完整的視覺。",
+    details: "設計主視覺、周邊、服裝、背板、指標、Badge 與網站，也參與開閉幕動畫製作及年會攤位執行。",
     image: designImage,
     imageAlt: "SITCON Camp 參與者在白板上畫圖",
     photoUrl: "https://www.flickr.com/photos/sitcon/55383671611",
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/kQ8G9AjiMHd3kZZQ9",
+    },
+    recruitmentDetails: {
+      deadline: "2026/08/25 23:59",
+      headcount: "5 人",
+      sections: [
+        {
+          title: "工作內容",
+          items: [
+            "主視覺與元素設計。",
+            "周邊、紀念品設計（可能包含背包）。",
+            "年會衣服、背板設計。",
+            "開場、閉幕動畫製作。",
+            "感謝狀、Badge 設計。",
+            "指標設計。",
+            "網頁設計。",
+            "年會當天顧攤位賣東西。",
+          ],
+        },
+        {
+          title: "招募流程",
+          items: ["填寫完表單後，設計組會再聯絡並約時間簡短聊聊。"],
+        },
+      ],
+      contacts: [
+        { label: "Telegram：@tiffanylai1103", url: "https://t.me/tiffanylai1103" },
+      ],
+    },
   },
   {
     name: "紀錄組",
@@ -194,41 +469,159 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     image: recordImage,
     imageAlt: "SITCON Camp 攝影工作人員在戶外取景",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388194816",
+    recruitment: { type: "overview" },
+    recruitmentDetails: {
+      deadline: "2026/08/17 23:59",
+      headcount: "待公布",
+      sections: [
+        {
+          title: "招募資訊",
+          paragraphs: ["紀錄組的詳細工作內容、招募人數與表單尚待公告，請以 HackMD 最新資訊為準。"],
+        },
+      ],
+    },
   },
   {
     name: "製播組",
     icon: "production",
-    description: "把現場內容穩定送到螢幕與線上。",
-    details: "負責議程直播、導播、音訊與監看設備，和場務及議程協作，讓每一場分享順利播出。",
+    description: "掌握現場影音訊號與直播技術。",
+    details: "負責導播、攝影、監看、音訊與燈控，也處理影音剪輯、素材整理及 NAS 架設等後勤工作。",
     image: productionImage,
     imageAlt: "SITCON 2026 製播工作人員戴耳機操作監看與控制設備",
     photoUrl: "https://www.flickr.com/photos/sitcon/55244847992",
+    recruitment: { type: "overview" },
+    recruitmentDetails: {
+      deadline: "待公布",
+      headcount: "30 人",
+      sections: [
+        {
+          title: "工作內容",
+          items: [
+            "影像、監看：導播、攝影、直播現場支援。",
+            "音訊、燈控：深入了解現場整體各式訊號控制及架構。",
+            "後勤：處理影音剪輯、素材整理及 NAS 架設。",
+          ],
+        },
+        {
+          title: "推薦條件",
+          items: ["對技術與影像有熱情。", "可接受大量學習與實作。", "適合技術控與喜歡研究設備的夥伴。"],
+        },
+        {
+          title: "想進一步了解？",
+          paragraphs: ["如果對製播有興趣或有其他相關問題，歡迎來找我們聊聊。"],
+        },
+      ],
+      contacts: [
+        { label: "製播組長 鯨魚：@jasonwu0504", url: "https://t.me/jasonwu0504" },
+        { label: "製播智庫 御痕：@Junter0323", url: "https://t.me/Junter0323" },
+        { label: "製播智庫 Camel：@Camel0311", url: "https://t.me/camel0311" },
+        { label: "製播智庫 Brian：@Brian31405", url: "https://t.me/brian31405" },
+        { label: "製播智庫 小弘：@hankcheng399", url: "https://t.me/hankcheng399" },
+      ],
+    },
   },
   {
     name: "開發組",
     icon: "development",
-    description: "打造官網、票務與籌備需要的數位工具。",
-    details: "開發與維護官網、報名與內部工具，將籌備需求轉成可靠、好用的數位服務。",
+    description: "打造官網、系統與年會需要的數位工具。",
+    details: "閱讀並維護既有專案，透過 Git 與 GitHub 協作，把籌備需求實作成可靠、好用的網頁應用與服務。",
     image: developmentImage,
     imageAlt: "參與者在筆電上操作終端機程式",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388594180",
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/mW5aqg37bEfVJLPi6",
+    },
+    recruitmentDetails: {
+      deadline: "2026/08/21",
+      headcount: "未公布",
+      sections: [
+        {
+          title: "加入開發組",
+          paragraphs: [
+            "如果你想在一個資訊年會中當個資訊人，跟我們一起搓點酷酷的系統、酷酷的官網，以及年會中人們會使用到的一切酷酷東西，歡迎加入開發組，和我們一起嗨！",
+          ],
+        },
+        {
+          title: "你需要",
+          items: [
+            "懂得閱讀現有的資料，遇到開發相關問題時能自行上網或詢問 AI 找到解決方案。",
+            "熟練使用 Git、GitHub，並懂得開 PR、CI 等基礎概念。",
+            "有網頁應用實作經驗，技術棧不限。",
+            "確認你的行事曆上有足夠時間投入籌備，夜貓也可以。",
+            "或者你會網頁設計，可以無視上面的技術要求；除了需要有足夠時間投入，我們很需要網頁設計人才。",
+          ],
+        },
+      ],
+      contacts: [
+        { label: "Telegram：@Nathan2045", url: "https://t.me/Nathan2045" },
+        { label: "Email：me@nath.tw", url: "mailto:me@nath.tw" },
+      ],
+    },
   },
   {
     name: "編輯組",
     icon: "editing",
-    description: "把年會資訊整理成清楚、準確的內容。",
-    details: "負責社群文案、公告與對外公關內容，和設計協作，把議程、活動與重要資訊說清楚。",
+    description: "用文字、影音與社群讓更多人認識 SITCON。",
+    details: "負責經營社群平台、撰寫文案、對外公關，尋找讓更多人認識 SITCON 的管道及方法。",
     image: editingImage,
-    imageAlt: "SITCON 2025 工作人員在桌邊手寫紙卡",
-    photoUrl: "https://www.flickr.com/photos/sitcon/54478181675",
+    imageAlt: "SITCON 工作人員在玻璃白板上書寫「編輯組」",
+    photoUrl: "https://www.flickr.com/photos/sitcon/55245913873/",
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/bxmNEGEm7oJb13Z47",
+    },
+    recruitmentDetails: {
+      deadline: "2026/08/23",
+      headcount: "1–2 人",
+      sections: [
+        {
+          title: "工作內容",
+          items: [
+            "經營社群，目前主要為 Facebook、Instagram、Threads；若對其他社群平台的經營有想法，也歡迎來跟組長聊聊。",
+            "撰寫文案，包含各平台貼文、月刊等，可以玩梗、玩抽象。",
+            "負責 Podcast、Reels 等影音的構想、剪輯與發布。",
+            "負責廣告投放、宣傳等工作。",
+            "年會當日負責各種訊息通知推播。",
+            "編輯組是長期組別，會在年會結束後持續運作，不會解散。",
+          ],
+        },
+        {
+          title: "推薦條件",
+          items: [
+            "對文案、影音及各社群媒體的宣傳與經營有想法。",
+            "具備文字、剪輯或公關能力任一即可。",
+            "有很多梗、梗圖或宣傳點子想要玩。",
+            "想要讓更多人認識 SITCON。",
+            "想要一輩子辦 SITCON。",
+            "偷偷說，SITCON 沒有全大寫會被組長扣分。",
+          ],
+        },
+      ],
+    },
   },
   {
     name: "行銷組",
     icon: "marketing",
-    description: "讓 SITCON 與更多學生和社群相遇。",
-    details: "規劃宣傳策略、校園與社群合作及推廣節奏，讓年會資訊抵達更多可能參與的人。",
+    description: "連結 SITCON 與贊助夥伴及媒體。",
+    details: "撰寫贊助提案、聯絡廠商與媒體，並在年會當日協助贊助商及媒體接待。",
     image: marketingImage,
     imageAlt: "社群攤位工作人員與參與者交談",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388577255",
+    recruitment: { type: "overview" },
+    recruitmentDetails: {
+      deadline: "待公布",
+      headcount: "待公布",
+      sections: [
+        {
+          title: "工作內容",
+          items: ["撰寫贊助提案。", "聯絡廠商與媒體。", "年會當日協助贊助商與媒體接待。"],
+        },
+        {
+          title: "推薦條件",
+          items: ["對行銷與商務往來有興趣。", "擅長寫 Email、喜歡溝通與談判。"],
+        },
+      ],
+    },
   },
 ];
