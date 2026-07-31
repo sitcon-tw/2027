@@ -28,6 +28,14 @@ const getRecruitmentUrl = (team: (typeof recruitmentTeams)[number]) =>
     </div>
   </div>
 
+  <aside class="shell multi-team-notice" aria-label="多組報名說明">
+    <span>Multiple teams welcome</span>
+    <p>
+      <strong>可以同時報名多個組別</strong>
+      不需要只選一組；如果有多個感興趣的組別，都歡迎報名！
+    </p>
+  </aside>
+
   <div class="shell team-grid" aria-label="工作人員招募組別">
     {
       recruitmentTeams.map((team) => {
