@@ -13,11 +13,19 @@ const SOURCE_DIRS = ["./src/data", "./src/pages", "./src/components", "./src/lay
 const SOURCE_EXTS = new Set([".astro", ".md", ".mdx", ".json", ".ts", ".tsx", ".js", ".jsx", ".mjs"]);
 const EXTRA_CHARS_FILE = "./extra-chars.txt";
 const PATCH_EXTS = new Set([".html", ".css", ".js"]);
+const CRITICAL_PAGE = join(DIST_DIR, "index.html");
+const CRITICAL_END_ID = "timeline";
+const CRITICAL_FONT_FAMILY = "LINE Seed TW Critical";
+const CRITICAL_WEIGHTS = new Set([400, 800]);
+const CRITICAL_PRELOAD_BUDGET_BYTES = 100 * 1024;
+const SUBSET_CACHE_VERSION = "2";
 // Match url(...) in CSS @font-face. Quote-agnostic, base-path-agnostic.
 const FONT_URL_RE = /url\((["']?)([^"')]*?)_astro\/fonts\/([^"')]+\.woff2)\1\)/g;
 // Match HTML attributes like <link rel="preload" href="..."> or <link rel="prefetch">.
 // Critical: without this, browsers preload the original (full-size) font.
 const FONT_ATTR_RE = /\b(href|src)=(["'])([^"']*?)_astro\/fonts\/([^"']+\.woff2)\2/g;
+const FONT_FACE_RE = /@font-face\s*\{[^}]*\}/g;
+const FONT_FACE_URL_RE = /url\((["']?)([^"')]*?)_astro\/fonts\/([^"')]+\.woff2)\1\)/;
 
 const BASE_CHARS = " !\"#$%&'()*+,-./0123456789:;<=>?@" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`" + "abcdefghijklmnopqrstuvwxyz{|}~" + "，。！？；：「」『』（）【】〔〕…—－～·、　" + "《》〈〉〝〞";
 
@@ -129,6 +137,55 @@ async function collectChars() {
 	return filtered.join("");
 }
 
+function decodeHtmlEntities(text) {
+	const named = new Map([
+		["amp", "&"],
+		["apos", "'"],
+		["gt", ">"],
+		["lt", "<"],
+		["nbsp", " "],
+		["quot", '"'],
+	]);
+	return text.replace(/&(#(?:x[\da-f]+|\d+)|[a-z]+);/gi, (entity, body) => {
+		if (body[0] !== "#") return named.get(body.toLowerCase()) ?? entity;
+		const hex = body[1]?.toLowerCase() === "x";
+		const codePoint = Number.parseInt(body.slice(hex ? 2 : 1), hex ? 16 : 10);
+		return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : entity;
+	});
+}
+
+// Keep the first screen tiny and deterministic by deriving its glyphs from the
+// rendered header/hero, stopping before the first below-the-fold section.
+async function collectCriticalChars() {
+	if (!existsSync(CRITICAL_PAGE)) throw new Error(`Critical page not found: ${CRITICAL_PAGE}`);
+	const html = await readFile(CRITICAL_PAGE, "utf-8");
+	const bodyStart = html.search(/<body\b/i);
+	const endMatch = new RegExp(`<section\\b[^>]*\\bid=(["'])${CRITICAL_END_ID}\\1`, "i").exec(html);
+	if (bodyStart === -1 || !endMatch || endMatch.index <= bodyStart) {
+		throw new Error(`Could not isolate critical content before #${CRITICAL_END_ID}`);
+	}
+
+	const visibleText = decodeHtmlEntities(
+		html
+			.slice(bodyStart, endMatch.index)
+			.replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+			.replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+			.replace(/<!--([\s\S]*?)-->/g, " ")
+			.replace(/<[^>]+>/g, " ")
+	);
+	const chars = new Set("0123456789");
+	for (const c of visibleText) chars.add(c);
+	const filtered = [...chars]
+		.filter(c => {
+			const cp = c.codePointAt(0);
+			return cp !== undefined && cp >= 0x20 && cp !== 0x7f;
+		})
+		.sort();
+
+	console.log(`  Collected ${filtered.length} critical chars`);
+	return filtered.join("");
+}
+
 // Find font files in dist
 async function findFonts(dir) {
 	if (!existsSync(dir)) return [];
@@ -140,12 +197,12 @@ async function findFonts(dir) {
 }
 
 // Subset single font
-async function subsetFontFile(fontPath, chars) {
+async function subsetFontFile(fontPath, chars, label = "subset") {
 	const input = await readFile(fontPath);
 	const output = await subsetFont(input, chars, { targetFormat: "woff2" });
-	await writeFile(join(SUBSET_DIR, `${basename(fontPath, extname(fontPath))}.subset.woff2`), output);
+	await writeFile(join(SUBSET_DIR, `${basename(fontPath, extname(fontPath))}.${label}.woff2`), output);
 	const saved = ((1 - output.byteLength / input.byteLength) * 100).toFixed(1);
-	console.log(`  ✓ ${basename(fontPath)} ${(input.byteLength / 1024).toFixed(1)}KB → ${(output.byteLength / 1024).toFixed(1)}KB (-${saved}%)`);
+	console.log(`  ✓ ${basename(fontPath)} [${label}] ${(input.byteLength / 1024).toFixed(1)}KB → ${(output.byteLength / 1024).toFixed(1)}KB (-${saved}%)`);
 }
 
 // Recursively collect files we need to patch (HTML, CSS, JS — anywhere @font-face or font-loader code may live).
@@ -163,13 +220,35 @@ async function collectPatchTargets(dir, out = []) {
 	return out;
 }
 
+async function discoverFontFaces(fonts) {
+	const byName = new Map();
+	const targets = await collectPatchTargets(DIST_DIR);
+	for (const fp of targets) {
+		const content = await readFile(fp, "utf-8");
+		for (const [block] of content.matchAll(FONT_FACE_RE)) {
+			const url = block.match(FONT_FACE_URL_RE);
+			const weight = block.match(/font-weight\s*:\s*(\d+)/i);
+			if (url && weight) byName.set(url[3], { prefix: url[2], weight: Number(weight[1]) });
+		}
+	}
+
+	return fonts.map(fp => {
+		const name = basename(fp);
+		const face = byName.get(name);
+		if (!face) throw new Error(`Could not determine font weight for ${name}`);
+		return { ...face, fp, name };
+	});
+}
+
+const toSubsetPath = (prefix, name) => `${prefix}assets/fonts/subset/${name.replace(/\.woff2$/, "")}.subset.woff2`;
+const toCriticalPath = (prefix, name) => `${prefix}assets/fonts/subset/${name.replace(/\.woff2$/, "")}.critical.woff2`;
+
 // Rewrite _astro/fonts/<name>.woff2 → assets/fonts/subset/<name>.subset.woff2 in HTML/CSS/JS.
 // Preserves any base prefix (/2026/, /, etc.) and the original quoting style.
 async function patchAssetUrls() {
 	const files = await collectPatchTargets(DIST_DIR);
 	let patched = 0;
 	const remaining = [];
-	const toSubsetPath = (prefix, name) => `${prefix}assets/fonts/subset/${name.replace(/\.woff2$/, "")}.subset.woff2`;
 	for (const fp of files) {
 		const original = await readFile(fp, "utf-8");
 		let updated = original
@@ -194,10 +273,49 @@ async function patchAssetUrls() {
 	return remaining.length === 0;
 }
 
+async function injectCriticalFonts(faces) {
+	const criticalFaces = faces.filter(face => CRITICAL_WEIGHTS.has(face.weight)).sort((a, b) => a.weight - b.weight);
+	if (criticalFaces.length !== CRITICAL_WEIGHTS.size) {
+		throw new Error(`Expected critical weights ${[...CRITICAL_WEIGHTS].join(", ")}, found ${criticalFaces.map(face => face.weight).join(", ")}`);
+	}
+
+	const preloadTags = criticalFaces
+		.map(face => `<link rel="preload" href="${toCriticalPath(face.prefix, face.name)}" as="font" type="font/woff2" crossorigin>`)
+		.join("");
+	const fontFaces = criticalFaces
+		.map(face => `@font-face{font-family:"${CRITICAL_FONT_FAMILY}";src:url("${toCriticalPath(face.prefix, face.name)}") format("woff2");font-display:swap;font-weight:${face.weight};font-style:normal;}`)
+		.join("");
+	const injected = `<style data-critical-fonts>${fontFaces}</style>${preloadTags}`;
+	const html = await readFile(CRITICAL_PAGE, "utf-8");
+	const viewport = /<meta\b[^>]*\bname=(["'])viewport\1[^>]*>/i;
+	if (!viewport.test(html)) throw new Error("Could not find viewport meta tag for critical font injection");
+	await writeFile(CRITICAL_PAGE, html.replace(viewport, match => `${match}${injected}`));
+	console.log(`  Injected ${criticalFaces.length} critical font preload(s)`);
+}
+
+async function enforceCriticalBudget(faces) {
+	const criticalFaces = faces.filter(face => CRITICAL_WEIGHTS.has(face.weight));
+	const totalBytes = (
+		await Promise.all(
+			criticalFaces.map(async face => (await readFile(join(SUBSET_DIR, `${basename(face.fp, extname(face.fp))}.critical.woff2`))).byteLength)
+		)
+	).reduce((total, bytes) => total + bytes, 0);
+	const totalKb = (totalBytes / 1024).toFixed(1);
+	const budgetKb = (CRITICAL_PRELOAD_BUDGET_BYTES / 1024).toFixed(0);
+	if (totalBytes > CRITICAL_PRELOAD_BUDGET_BYTES) {
+		throw new Error(`Critical font payload ${totalKb}KB exceeds the ${budgetKb}KB budget`);
+	}
+	console.log(`  Critical preload budget: ${totalKb}KB / ${budgetKb}KB`);
+}
+
 // Hash inputs that should bust the cache: chars + every font file's bytes.
-async function buildCacheKey(chars, fonts) {
+async function buildCacheKey(chars, criticalChars, fonts) {
 	const h = createHash("sha256");
+	h.update(SUBSET_CACHE_VERSION);
+	h.update("\0");
 	h.update(chars);
+	h.update("\0critical\0");
+	h.update(criticalChars);
 	for (const fp of fonts.slice().sort()) {
 		h.update("\0");
 		h.update(fp);
@@ -209,33 +327,40 @@ async function buildCacheKey(chars, fonts) {
 
 // --- Main ---
 const chars = await collectChars();
+const criticalChars = await collectCriticalChars();
 
 const fonts = await findFonts(DIST_DIR);
 if (fonts.length === 0) {
 	console.warn("⚠ No font files found in dist/");
 	process.exit(1);
 }
+const fontFaces = await discoverFontFaces(fonts);
 
 await mkdir(SUBSET_DIR, { recursive: true });
 await mkdir(CACHE_DIR, { recursive: true });
 
-const cacheKey = await buildCacheKey(chars, fonts);
+const cacheKey = await buildCacheKey(chars, criticalChars, fonts);
 const cacheKeyFile = join(CACHE_DIR, "cache-key");
 const subsetFontsExist = (
 	await Promise.all(
-		fonts.map(fp =>
-			readFile(join(SUBSET_DIR, `${basename(fp, extname(fp))}.subset.woff2`)).then(
+		fontFaces.flatMap(face => ["subset", ...(CRITICAL_WEIGHTS.has(face.weight) ? ["critical"] : [])].map(label =>
+			readFile(join(SUBSET_DIR, `${basename(face.fp, extname(face.fp))}.${label}.woff2`)).then(
 				() => true,
 				() => false
 			)
-		)
+		))
 	)
 ).every(Boolean);
 
 const cacheHit = subsetFontsExist && existsSync(cacheKeyFile) && (await readFile(cacheKeyFile, "utf-8")) === cacheKey;
 
 // Drop orphaned subsets (e.g. Astro's content-hashed font filenames change between builds).
-const expectedSubsets = new Set(fonts.map(fp => `${basename(fp, extname(fp))}.subset.woff2`));
+const expectedSubsets = new Set(
+	fontFaces.flatMap(face => [
+		`${basename(face.fp, extname(face.fp))}.subset.woff2`,
+		...(CRITICAL_WEIGHTS.has(face.weight) ? [`${basename(face.fp, extname(face.fp))}.critical.woff2`] : []),
+	])
+);
 const existingSubsets = existsSync(SUBSET_DIR) ? await readdir(SUBSET_DIR) : [];
 for (const name of existingSubsets) {
 	if (!expectedSubsets.has(name)) await unlink(join(SUBSET_DIR, name));
@@ -245,17 +370,21 @@ if (cacheHit) {
 	console.log("✓ Inputs unchanged. Skipping subset.");
 } else {
 	console.log(`\nSubsetting ${fonts.length} font(s)...\n`);
+	const subsetJobs = fontFaces.flatMap(face => [
+		{ fp: face.fp, chars, label: "subset" },
+		...(CRITICAL_WEIGHTS.has(face.weight) ? [{ fp: face.fp, chars: criticalChars, label: "critical" }] : []),
+	]);
 	const results = await Promise.all(
-		fonts.map(fp =>
-			subsetFontFile(fp, chars).then(
+		subsetJobs.map(job =>
+			subsetFontFile(job.fp, job.chars, job.label).then(
 				() => null,
-				e => ({ fp, err: e })
+				e => ({ fp: job.fp, label: job.label, err: e })
 			)
 		)
 	);
 	const failures = results.filter(Boolean);
 	if (failures.length > 0) {
-		for (const { fp, err } of failures) console.error(`  ✗ Failed: ${basename(fp)} - ${err.message}`);
+		for (const { fp, label, err } of failures) console.error(`  ✗ Failed: ${basename(fp)} [${label}] - ${err.message}`);
 		console.error(`\n✗ ${failures.length} font(s) failed.`);
 		process.exit(1);
 	}
@@ -263,7 +392,9 @@ if (cacheHit) {
 
 // HTML/CSS/JS patching is idempotent and cheap — always run so a fresh `astro build`
 // gets re-patched even when chars/fonts didn't change.
+await enforceCriticalBudget(fontFaces);
 const fullyPatched = await patchAssetUrls();
+await injectCriticalFonts(fontFaces);
 
 await writeFile(cacheKeyFile, cacheKey);
 

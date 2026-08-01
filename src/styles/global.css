@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-line-seed-tw);
-  --font-mono: var(--font-line-seed-tw);
+  --font-sans: var(--font-line-seed-tw), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-line-seed-tw), ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
+  --font-line-seed-critical: "LINE Seed TW Critical";
   --ink: #101312;
   --ink-soft: #181c1a;
   --paper: #f2efe5;
@@ -32,6 +33,13 @@
 html {
   scroll-padding-top: var(--header-height);
   overflow-x: clip;
+}
+
+.site-header,
+.hero,
+.next-band {
+  --font-sans: var(--font-line-seed-critical), var(--font-line-seed-tw), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
 }
 
 body {
