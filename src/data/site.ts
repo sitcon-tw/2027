@@ -377,7 +377,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
       url: "https://forms.gle/Xfhs7qKRDCgFBUQi6",
     },
     recruitmentDetails: {
-      deadline: "2026/08/31",
+      deadline: "2026/08/31 23:59",
       headcount: "40 人",
       sections: [
         {
@@ -536,7 +536,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
       url: "https://forms.gle/mW5aqg37bEfVJLPi6",
     },
     recruitmentDetails: {
-      deadline: "2026/08/21",
+      deadline: "2026/08/21 23:59",
       headcount: "未公布",
       sections: [
         {
@@ -574,7 +574,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
       url: "https://forms.gle/bxmNEGEm7oJb13Z47",
     },
     recruitmentDetails: {
-      deadline: "2026/08/23",
+      deadline: "2026/08/23 23:59",
       headcount: "1–2 人",
       sections: [
         {
@@ -612,7 +612,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     photoUrl: "https://www.flickr.com/photos/sitcon/55388577255",
     recruitment: { type: "overview" },
     recruitmentDetails: {
-      deadline: "2025/08/18",
+      deadline: "2025/08/18 23:59",
       headcount: "11 人",
       sections: [
         {
