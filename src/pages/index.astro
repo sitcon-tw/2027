@@ -37,7 +37,7 @@ import Layout from "../layouts/Layout.astro";
             <h1 id="hero-heading">SITCON<br />2027</h1>
           </div>
           <div class="hero-side">
-            <p class="hero-theme">{siteConfig.tagline}</p>
+            <p class="hero-theme">{siteConfig.tagline.map((part) => <span>{part}</span>)}</p>
             <p>SITCON 由學生自發籌辦。依照你的專長與興趣加入籌備團隊，和我們一起把想法變成明年的年會現場。</p>
             <a class="primary-button" href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">
               查看招募資訊

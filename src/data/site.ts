@@ -66,7 +66,7 @@ export const siteConfig = {
   name: "SITCON 2027",
   fullName: "SITCON 學生計算機年會 2027",
   status: "籌備進行中",
-  tagline: "一起做出 SITCON 2027",
+  tagline: ["工作人員", "招募中"],
   seo: {
     title: "SITCON 2027 學生計算機年會｜籌備資訊與工作人員招募",
     description:
