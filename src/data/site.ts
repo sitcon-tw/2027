@@ -294,9 +294,12 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     image: activityImage,
     imageAlt: "SITCON 2026 工作人員拿著麥克風帶領參與者互動",
     photoUrl: "https://www.flickr.com/photos/sitcon/55250534728",
-    recruitment: { type: "overview" },
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/3NGNqeUxZ3C5UFXp8",
+    },
     recruitmentDetails: {
-      deadline: "待公布",
+      deadline: "2026/08/17 23:59",
       headcount: "3–4 人",
       sections: [
         {
@@ -374,7 +377,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
       url: "https://forms.gle/Xfhs7qKRDCgFBUQi6",
     },
     recruitmentDetails: {
-      deadline: "2026 年 9 月中旬",
+      deadline: "2026/08/31",
       headcount: "40 人",
       sections: [
         {
@@ -436,10 +439,10 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/25 23:59",
-      headcount: "5 人",
+      headcount: "4 人",
       sections: [
         {
-          title: "工作內容",
+          title: "我們要做的事情",
           items: [
             "主視覺與元素設計。",
             "周邊、紀念品設計（可能包含背包）。",
@@ -451,10 +454,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
             "年會當天顧攤位賣東西。",
           ],
         },
-        {
-          title: "招募流程",
-          items: ["填寫完表單後，設計組會再聯絡並約時間簡短聊聊。"],
-        },
       ],
       contacts: [
         { label: "Telegram：@tiffanylai1103", url: "https://t.me/tiffanylai1103" },
@@ -465,18 +464,21 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     name: "紀錄組",
     icon: "record",
     description: "保存影像、文字與社群共同完成的軌跡。",
-    details: "由靜態與動態夥伴拍攝、整理年會影像，讓每場分享與共同記憶都能被完整保存。",
+    details: "負責年會影像拍攝、出圖與動態紀錄，保存社群共同完成的軌跡。",
     image: recordImage,
     imageAlt: "SITCON Camp 攝影工作人員在戶外取景",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388194816",
-    recruitment: { type: "overview" },
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/VuUoEM4hDn12UNzh9",
+    },
     recruitmentDetails: {
-      deadline: "2026/08/17 23:59",
-      headcount: "待公布",
+      deadline: "2026/08/31 23:59（UTC+8）",
+      headcount: "9 人",
       sections: [
         {
-          title: "招募資訊",
-          paragraphs: ["紀錄組的詳細工作內容、招募人數與表單尚待公告，請以 HackMD 最新資訊為準。"],
+          title: "工作內容",
+          items: ["拍攝。", "出圖。", "動態紀錄。"],
         },
       ],
     },
@@ -489,10 +491,13 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     image: productionImage,
     imageAlt: "SITCON 2026 製播工作人員戴耳機操作監看與控制設備",
     photoUrl: "https://www.flickr.com/photos/sitcon/55244847992",
-    recruitment: { type: "overview" },
+    recruitment: {
+      type: "form",
+      url: "https://forms.gle/5WR2YdoDjoJPrQHe6",
+    },
     recruitmentDetails: {
-      deadline: "待公布",
-      headcount: "30 人",
+      deadline: "2026/08/31 23:59",
+      headcount: "26 人",
       sections: [
         {
           title: "工作內容",
@@ -514,8 +519,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
       contacts: [
         { label: "製播組長 鯨魚：@jasonwu0504", url: "https://t.me/jasonwu0504" },
         { label: "製播智庫 御痕：@Junter0323", url: "https://t.me/Junter0323" },
-        { label: "製播智庫 Camel：@Camel0311", url: "https://t.me/camel0311" },
-        { label: "製播智庫 Brian：@Brian31405", url: "https://t.me/brian31405" },
         { label: "製播智庫 小弘：@hankcheng399", url: "https://t.me/hankcheng399" },
       ],
     },
@@ -549,7 +552,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
             "熟練使用 Git、GitHub，並懂得開 PR、CI 等基礎概念。",
             "有網頁應用實作經驗，技術棧不限。",
             "確認你的行事曆上有足夠時間投入籌備，夜貓也可以。",
-            "或者你會網頁設計，可以無視上面的技術要求；除了需要有足夠時間投入，我們很需要網頁設計人才。",
           ],
         },
       ],
@@ -604,18 +606,24 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     name: "行銷組",
     icon: "marketing",
     description: "連結 SITCON 與贊助夥伴及媒體。",
-    details: "撰寫贊助提案、聯絡廠商與媒體，並在年會當日協助贊助商及媒體接待。",
+    details: "撰寫贊助提案、聯絡廠商與媒體、協助贊助商及媒體接待，也負責社群攤位聯繫與發想新的資金開源方式。",
     image: marketingImage,
     imageAlt: "社群攤位工作人員與參與者交談",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388577255",
     recruitment: { type: "overview" },
     recruitmentDetails: {
-      deadline: "待公布",
-      headcount: "待公布",
+      deadline: "2025/08/18",
+      headcount: "11 人",
       sections: [
         {
           title: "工作內容",
-          items: ["撰寫贊助提案。", "聯絡廠商與媒體。", "年會當日協助贊助商與媒體接待。"],
+          items: [
+            "撰寫贊助提案。",
+            "聯絡廠商與媒體。",
+            "年會當日協助贊助商與媒體接待。",
+            "社群攤位聯繫。",
+            "發想新的開源（資金開源）方式並執行。",
+          ],
         },
         {
           title: "推薦條件",
