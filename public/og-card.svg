@@ -6,20 +6,20 @@
   </g>
 
   <rect x="64" y="62" width="14" height="14" fill="#c9ff3d"/>
-  <text x="94" y="77" fill="#c9ff3d" font-family="monospace" font-size="18" font-weight="700">STUDENTS' INFORMATION TECHNOLOGY CONFERENCE</text>
+  <text x="94" y="77" fill="#c9ff3d" font-family="LINE Seed TW" font-size="18" font-weight="700">STUDENTS' INFORMATION TECHNOLOGY CONFERENCE</text>
 
-  <text x="58" y="286" fill="#f2efe5" font-family="Arial, sans-serif" font-size="150" font-weight="900">SITCON</text>
-  <text x="58" y="445" fill="#ff625b" font-family="Arial, sans-serif" font-size="150" font-weight="900">2027</text>
-  <text x="66" y="502" fill="#f2efe5" font-family="Arial, 'PingFang TC', 'Noto Sans CJK TC', sans-serif" font-size="31" font-weight="700">學生計算機年會</text>
+  <text x="58" y="286" fill="#f2efe5" font-family="LINE Seed TW" font-size="150" font-weight="900">SITCON</text>
+  <text x="58" y="445" fill="#ff625b" font-family="LINE Seed TW" font-size="150" font-weight="900">2027</text>
+  <text x="66" y="502" fill="#f2efe5" font-family="LINE Seed TW" font-size="31" font-weight="700">學生計算機年會</text>
 
   <rect x="710" y="150" width="410" height="342" fill="#101312" stroke="#f2efe5" stroke-opacity=".28"/>
-  <text x="750" y="202" fill="#7d88ff" font-family="monospace" font-size="16" font-weight="700">SITCON 2027 · TAIPEI</text>
+  <text x="750" y="202" fill="#7d88ff" font-family="LINE Seed TW" font-size="16" font-weight="700">SITCON 2027 · TAIPEI</text>
   <path d="M750 230h330" stroke="#f2efe5" stroke-opacity=".28"/>
-  <text x="750" y="275" fill="#f2efe5" fill-opacity=".62" font-family="Arial, 'PingFang TC', sans-serif" font-size="18">年會日期</text>
-  <text x="750" y="326" fill="#c9ff3d" font-family="monospace" font-size="42" font-weight="700">2027.03.13</text>
-  <text x="750" y="381" fill="#f2efe5" fill-opacity=".62" font-family="Arial, 'PingFang TC', sans-serif" font-size="18">活動地點</text>
-  <text x="750" y="424" fill="#f2efe5" font-family="Arial, 'PingFang TC', 'Noto Sans CJK TC', sans-serif" font-size="25" font-weight="700">中央研究院</text>
-  <text x="750" y="458" fill="#f2efe5" font-family="Arial, 'PingFang TC', 'Noto Sans CJK TC', sans-serif" font-size="25" font-weight="700">人文社會科學館</text>
+  <text x="750" y="275" fill="#f2efe5" fill-opacity=".62" font-family="LINE Seed TW" font-size="18">年會日期</text>
+  <text x="750" y="326" fill="#c9ff3d" font-family="LINE Seed TW" font-size="42" font-weight="700">2027.03.13</text>
+  <text x="750" y="381" fill="#f2efe5" fill-opacity=".62" font-family="LINE Seed TW" font-size="18">活動地點</text>
+  <text x="750" y="424" fill="#f2efe5" font-family="LINE Seed TW" font-size="25" font-weight="700">中央研究院</text>
+  <text x="750" y="458" fill="#f2efe5" font-family="LINE Seed TW" font-size="25" font-weight="700">人文社會科學館</text>
 
   <g fill="none" stroke-width="4">
     <path d="M1085 585v-48l-27-24M1085 554l35-29" stroke="#c9ff3d"/>
@@ -27,5 +27,5 @@
   </g>
   <g fill="#c9ff3d"><rect x="1079" y="531" width="12" height="12"/><rect x="1052" y="507" width="12" height="12"/><rect x="1114" y="519" width="12" height="12"/></g>
   <g fill="#ff625b"><rect x="1142" y="551" width="12" height="12"/><rect x="1162" y="533" width="12" height="12"/></g>
-  <text x="66" y="574" fill="#f2efe5" fill-opacity=".62" font-family="monospace" font-size="16">SITCON.ORG/2027 · 籌備進行中</text>
+  <text x="66" y="574" fill="#f2efe5" fill-opacity=".62" font-family="LINE Seed TW" font-size="16">SITCON.ORG/2027 · 籌備進行中</text>
 </svg>

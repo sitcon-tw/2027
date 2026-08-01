@@ -5,19 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/font-subset.mjs",
+    "build:subset": "node scripts/font-subset.mjs",
     "preview": "astro preview",
     "check": "astro check"
   },
   "dependencies": {
     "@lucide/astro": "^0.556.0",
     "@tailwindcss/vite": "^4.1.0",
-    "astro": "^5.0.0",
+    "astro": "^6.1.5",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "subset-font": "^2.5.0",
     "typescript": "^5.7.2"
   },
   "packageManager": "pnpm@10.30.3"
