@@ -56,7 +56,6 @@ export interface RecruitmentTeam {
     | { type: "none" };
   recruitmentDetails?: {
     deadline: string;
-    headcount: string;
     sections: RecruitmentDetailSection[];
     contacts?: RecruitmentContact[];
   };
@@ -176,7 +175,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/15 23:59",
-      headcount: "行政股 1 人、財務股 1 人",
       sections: [
         {
           title: "行政股工作內容",
@@ -219,7 +217,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/17 23:59",
-      headcount: "組員 4 人、議程助理 10 人",
       sections: [
         {
           title: "議程組工作內容",
@@ -300,7 +297,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/17 23:59",
-      headcount: "3–4 人",
       sections: [
         {
           title: "關於活動組",
@@ -378,7 +374,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/31 23:59",
-      headcount: "40 人",
       sections: [
         {
           title: "關於場務組",
@@ -439,7 +434,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/25 23:59",
-      headcount: "4 人",
       sections: [
         {
           title: "我們要做的事情",
@@ -474,7 +468,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/31 23:59（UTC+8）",
-      headcount: "9 人",
       sections: [
         {
           title: "工作內容",
@@ -497,7 +490,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/31 23:59",
-      headcount: "26 人",
       sections: [
         {
           title: "工作內容",
@@ -537,7 +529,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/21 23:59",
-      headcount: "未公布",
       sections: [
         {
           title: "加入開發組",
@@ -575,7 +566,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     },
     recruitmentDetails: {
       deadline: "2026/08/23 23:59",
-      headcount: "1–2 人",
       sections: [
         {
           title: "工作內容",
@@ -613,7 +603,6 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     recruitment: { type: "form", url: "https://forms.gle/6axBFeVCGrPBQMZFA" },
     recruitmentDetails: {
       deadline: "2025/08/18 23:59",
-      headcount: "11 人",
       sections: [
         {
           title: "工作內容",

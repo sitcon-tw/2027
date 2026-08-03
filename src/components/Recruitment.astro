@@ -28,12 +28,12 @@ const getRecruitmentUrl = (team: (typeof recruitmentTeams)[number]) =>
     </div>
   </div>
 
-  <aside class="shell multi-team-notice" aria-label="多組報名說明">
-    <span>Multiple teams welcome</span>
-    <p>
-      <strong>可以同時報名多個組別</strong>
-      不需要只選一組；如果有多個感興趣的組別，都歡迎報名！
-    </p>
+  <aside class="shell multi-team-notice" aria-labelledby="multi-team-heading">
+    <span class="multi-team-notice-mark" aria-hidden="true">＋</span>
+    <div class="multi-team-notice-copy">
+      <h3 id="multi-team-heading">喜歡不只一組？<strong>那就都報。</strong></h3>
+      <p><span>你可以同時報名多個組別，</span><span>不需要只選一組。</span></p>
+    </div>
   </aside>
 
   <div class="shell team-grid" aria-label="工作人員招募組別">
@@ -137,7 +137,13 @@ const getRecruitmentUrl = (team: (typeof recruitmentTeams)[number]) =>
               <div>
                 <p class="eyebrow">Team recruitment · 組別招募</p>
                 <h2 id={titleId}>{team.name}</h2>
-                <p id={descriptionId}>{team.description}</p>
+                <p id={descriptionId} class="recruitment-dialog-description">{team.description}</p>
+                <dl class="recruitment-dialog-meta">
+                  <div>
+                    <dt>招募截止</dt>
+                    <dd>{details.deadline}</dd>
+                  </div>
+                </dl>
               </div>
               <form method="dialog">
                 <button class="recruitment-dialog-close" type="submit" aria-label={`關閉${team.name}詳細資訊`}>
@@ -145,17 +151,6 @@ const getRecruitmentUrl = (team: (typeof recruitmentTeams)[number]) =>
                 </button>
               </form>
             </header>
-
-            <dl class="recruitment-dialog-meta">
-              <div>
-                <dt>招募截止</dt>
-                <dd>{details.deadline}</dd>
-              </div>
-              <div>
-                <dt>預計人數</dt>
-                <dd>{details.headcount}</dd>
-              </div>
-            </dl>
 
             <div class="recruitment-dialog-content" tabindex="0" aria-label={`${team.name}詳細招募內容`}>
               {

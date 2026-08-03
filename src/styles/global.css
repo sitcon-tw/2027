@@ -621,43 +621,44 @@ canvas {
 }
 
 .multi-team-notice {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  margin-top: 52px;
-  padding: 16px 18px;
-  color: var(--ink);
-  background: var(--acid);
-  border-left: 6px solid var(--coral);
+  gap: 18px;
+  margin-top: 72px;
 }
 
-.multi-team-notice > span {
-  flex: 0 0 auto;
-  font-family: var(--font-sans);
-  font-size: 10px;
+.multi-team-notice-mark {
+  color: var(--coral);
+  font-size: clamp(42px, 5vw, 68px);
   font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  line-height: 0.82;
 }
 
-.multi-team-notice p {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
+.multi-team-notice h3 {
   margin: 0;
-  font-size: 14px;
+  color: var(--acid);
+  font-size: clamp(32px, 3.8vw, 52px);
+  font-weight: 850;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
-.multi-team-notice strong {
-  font-size: 17px;
-  font-weight: 900;
+.multi-team-notice h3 strong {
+  font-weight: inherit;
+}
+
+.multi-team-notice-copy > p {
+  max-width: 400px;
+  margin: 16px 0 0;
+  color: rgba(242, 239, 229, 0.72);
+  font-size: 16px;
 }
 
 .team-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: 28px;
+  margin-top: 36px;
   border-top: 1px solid var(--line-light);
   border-left: 1px solid var(--line-light);
 }
@@ -840,7 +841,7 @@ body.dialog-is-open {
   line-height: 1.08;
 }
 
-.recruitment-dialog-header > div > p:last-child {
+.recruitment-dialog-description {
   max-width: 570px;
   margin: 14px 0 0;
   color: rgba(242, 239, 229, 0.7);
@@ -875,32 +876,28 @@ body.dialog-is-open {
 }
 
 .recruitment-dialog-meta {
-  display: grid;
-  flex: 0 0 auto;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0;
-  border-bottom: 1px solid var(--line-light);
+  margin: 20px 0 0;
+  padding-left: 14px;
+  border-left: 4px solid var(--acid);
 }
 
 .recruitment-dialog-meta > div {
-  padding: 18px 36px;
-}
-
-.recruitment-dialog-meta > div + div {
-  border-left: 1px solid var(--line-light);
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .recruitment-dialog-meta dt {
-  margin-bottom: 5px;
-  color: rgba(242, 239, 229, 0.5);
+  color: var(--acid);
   font-family: var(--font-sans);
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  font-size: 14px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .recruitment-dialog-meta dd {
   margin: 0;
+  font-size: 18px;
   font-weight: 800;
 }
 
@@ -1407,6 +1404,10 @@ body.dialog-is-open {
     gap: 28px;
   }
 
+  .multi-team-notice {
+    margin-top: 52px;
+  }
+
   .section-lede,
   .join-copy,
   .about-copy {
@@ -1526,18 +1527,20 @@ body.dialog-is-open {
   }
 
   .multi-team-notice {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 40px;
-    padding: 15px 16px;
+    gap: 12px;
+    margin-top: 44px;
   }
 
-  .multi-team-notice p {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
+  .multi-team-notice h3 strong {
+    display: block;
+  }
+
+  .multi-team-notice-copy > p {
     line-height: 1.55;
+  }
+
+  .multi-team-notice-copy > p span {
+    display: block;
   }
 
   .team-grid {
@@ -1569,19 +1572,6 @@ body.dialog-is-open {
   .recruitment-dialog-close {
     width: 40px;
     height: 40px;
-  }
-
-  .recruitment-dialog-meta {
-    grid-template-columns: 1fr;
-  }
-
-  .recruitment-dialog-meta > div {
-    padding: 14px 20px;
-  }
-
-  .recruitment-dialog-meta > div + div {
-    border-top: 1px solid var(--line-light);
-    border-left: 0;
   }
 
   .recruitment-dialog-content {
