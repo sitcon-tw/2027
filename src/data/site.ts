@@ -610,7 +610,7 @@ export const recruitmentTeams: RecruitmentTeam[] = [
     image: marketingImage,
     imageAlt: "社群攤位工作人員與參與者交談",
     photoUrl: "https://www.flickr.com/photos/sitcon/55388577255",
-    recruitment: { type: "overview" },
+    recruitment: { type: "form", url: "https://forms.gle/6axBFeVCGrPBQMZFA" },
     recruitmentDetails: {
       deadline: "2025/08/18 23:59",
       headcount: "11 人",
