@@ -80,6 +80,12 @@ export const siteConfig = {
   recruitment: {
     overviewUrl: "https://hackmd.io/@SITCON/2027-recruit",
   },
+  bof: {
+    signupUrl: "https://i.sitcon.org/bof",
+    date: "8/8（六）",
+    time: "17:00–21:00",
+    venue: "台師大公館校區理學 E 館 E102",
+  },
   links: {
     codeOfConduct: "https://sitcon.org/code-of-conduct/",
     mailingList: "https://groups.google.com/g/sitcon-general/",
