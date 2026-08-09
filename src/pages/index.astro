@@ -1,6 +1,6 @@
 ---
 import { Picture } from "astro:assets";
-import { ArrowDown, ArrowUpRight, CalendarDays, MapPin, Pizza, Users } from "@lucide/astro";
+import { ArrowDown, ArrowUpRight, CalendarDays, MapPin } from "@lucide/astro";
 import heroImage from "../assets/sitcon-2026-crew.jpg";
 import About from "../components/About.astro";
 import Footer from "../components/Footer.astro";
@@ -33,41 +33,32 @@ import Layout from "../layouts/Layout.astro";
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="shell hero-inner">
         <div class="hero-content">
-          <div class="hero-perks" aria-label="活動特色">
-            <div class="hero-perk hero-perk-open">
-              <Users size={30} stroke-width={1.9} aria-hidden="true" />
-              <span><small>不用報名、不限身分</small><strong>自由參加</strong></span>
-            </div>
-            <div class="hero-perk hero-perk-pizza">
-              <Pizza size={30} stroke-width={1.9} aria-hidden="true" />
-              <span><small>來就請你吃</small><strong>免費 Pizza</strong></span>
-            </div>
+          <div class="hero-title-wrap">
+            <h1 id="hero-heading">SITCON<br />2027</h1>
           </div>
-
-          <div class="hero-message">
-            <div class="hero-title-wrap">
-              <p class="hero-kicker">SITCON 2027 籌備開放聚會 <span>BoF</span></p>
-              <h1 id="hero-heading">來吃 Pizza，<br /><span>一起做年會。</span></h1>
-            </div>
-            <div class="hero-side">
-              <p class="hero-description">想知道 SITCON 是怎麼辦出來的？我們會介紹今年要做什麼、各組的詳細工作內容。你不需要任何經驗，也不用先決定要加入，過來聽聽、吃 Pizza、交朋友就好。</p>
-              <a class="primary-button bof-button" href={siteConfig.bof.signupUrl} target="_blank" rel="noreferrer">
-                <span><small>到 Google Docs 留下名字</small>我要來參加</span>
-                <ArrowUpRight size={30} stroke-width={2.3} aria-hidden="true" />
-              </a>
-            </div>
+          <div class="hero-side">
+            <p class="hero-theme">{siteConfig.tagline.map((part) => <span>{part}</span>)}</p>
+            <p>SITCON 由學生自發籌辦。依照你的專長與興趣加入籌備團隊，和我們一起把想法變成明年的年會現場。</p>
+            <a class="primary-button" href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">
+              查看招募資訊
+              <ArrowUpRight size={20} stroke-width={2.3} aria-hidden="true" />
+            </a>
           </div>
+        </div>
 
-          <div class="hero-event-card">
-            <div class="hero-event-date">
-              <CalendarDays size={24} stroke-width={1.8} aria-hidden="true" />
-              <span><small>8 月 8 日・星期六</small><strong>17:00–21:00</strong></span>
-            </div>
-            <div class="hero-event-place">
-              <MapPin size={24} stroke-width={1.8} aria-hidden="true" />
-              <span><small>台師大公館校區</small><strong>理學 E 館 E102</strong></span>
-            </div>
-            <p>帶著好奇心來就可以。</p>
+        <div class="event-strip">
+          <div class="event-date">
+            <CalendarDays size={20} stroke-width={1.8} aria-hidden="true" />
+            <span class="event-info"><small>年會日期</small><strong>{siteConfig.dateDisplay}</strong></span>
+          </div>
+          <div class="event-place">
+            <MapPin size={20} stroke-width={1.8} aria-hidden="true" />
+            <span class="event-info"><small>地點</small><strong>{siteConfig.venue}</strong></span>
+          </div>
+          <div class="countdown" data-countdown data-target={siteConfig.startDate} aria-live="polite">
+            <span><strong data-days>---</strong><small>Days</small></span>
+            <span><strong data-hours>--</strong><small>Hours</small></span>
+            <span><strong data-minutes>--</strong><small>Mins</small></span>
           </div>
         </div>
       </div>
@@ -84,4 +75,26 @@ import Layout from "../layouts/Layout.astro";
     <About />
   </main>
   <Footer />
+
+  <script>
+    const countdown = document.querySelector<HTMLElement>("[data-countdown]");
+    const target = countdown?.dataset.target ? new Date(countdown.dataset.target).getTime() : 0;
+
+    const updateCountdown = () => {
+      if (!countdown || !target) return;
+      const remaining = Math.max(0, target - Date.now());
+      const days = Math.floor(remaining / 86_400_000);
+      const hours = Math.floor((remaining % 86_400_000) / 3_600_000);
+      const minutes = Math.floor((remaining % 3_600_000) / 60_000);
+      const dayNode = countdown.querySelector("[data-days]");
+      const hourNode = countdown.querySelector("[data-hours]");
+      const minuteNode = countdown.querySelector("[data-minutes]");
+      if (dayNode) dayNode.textContent = String(days).padStart(3, "0");
+      if (hourNode) hourNode.textContent = String(hours).padStart(2, "0");
+      if (minuteNode) minuteNode.textContent = String(minutes).padStart(2, "0");
+    };
+
+    updateCountdown();
+    window.setInterval(updateCountdown, 60_000);
+  </script>
 </Layout>
