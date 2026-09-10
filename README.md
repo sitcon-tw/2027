@@ -38,3 +38,18 @@ rsvg-convert public/og-card.svg -o public/og-card.png
 - 將 `https://sitcon.org/2027/` 加入根網站的 `https://sitcon.org/sitemap.xml`；本專案另提供 `https://sitcon.org/2027/sitemap.xml`。
 - 正式上線後使用 Google Search Console 提交 sitemap，並以 Rich Results Test 驗證 Event 結構化資料。
 - 更新日期、地點或 OG 內容時，同步修改 `src/data/site.ts`、`public/og-card.svg`、`public/og-card.png` 與 `public/sitemap.xml` 的 `lastmod`。
+
+
+## CFS publication
+
+The deployment checks out the generated `build` branch of
+[`sitcon-tw/2027-cfs`](https://github.com/sitcon-tw/2027-cfs), copies its files into
+`dist/cfs/`, and publishes the combined site at <https://sitcon.org/2027/>.
+CFS is built entirely in its own repository; this repository only reads its output.
+The consumed CFS commit is recorded in the deployment workflow summary.
+
+For CFS updates, first wait for **Build CFS site** in `2027-cfs` to succeed, then
+manually run **Deploy website** here on `main`. Normal main-branch deployments also
+use the latest successful CFS build. There are no scheduled refreshes or
+cross-repository writes. Missing CFS output fails deployment, leaving the existing
+live website unchanged.

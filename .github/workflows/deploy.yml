@@ -44,6 +44,22 @@ jobs:
       - name: Build website
         run: pnpm build
 
+      - name: Checkout built CFS site
+        uses: actions/checkout@v4
+        with:
+          repository: sitcon-tw/2027-cfs
+          ref: build
+          path: cfs-built
+          persist-credentials: false
+
+      - name: Assemble CFS output
+        run: |
+          test -f cfs-built/index.html
+          mkdir -p dist/cfs
+          rsync -a --exclude='.git' cfs-built/ dist/cfs/
+          cfs_revision=$(git -C cfs-built rev-parse HEAD)
+          echo "CFS build: [${cfs_revision}](https://github.com/sitcon-tw/2027-cfs/commit/${cfs_revision})" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish static files to build branch
         run: |
           if git ls-remote --exit-code --heads origin build >/dev/null 2>&1; then
