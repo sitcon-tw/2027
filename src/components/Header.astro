@@ -13,13 +13,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
     </a>
 
     <nav class="desktop-nav" aria-label="主要導覽">
-      <a href="#timeline">籌備時程</a>
-      <a href="#join">加入籌備</a>
       <a href="#about">關於 SITCON</a>
+      <a href="#activities">社群活動</a>
+      <a href="#event">2027 年會</a>
     </nav>
 
-    <a class="header-cta" href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">
-      工作人員招募
+    <a class="header-cta" href={siteConfig.links.contact}>
+      合作洽詢
       <ArrowUpRight size={17} stroke-width={2.4} aria-hidden="true" />
     </a>
 
@@ -30,10 +30,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   </div>
 
   <nav id="mobile-menu" class="mobile-nav" aria-label="行動版導覽" hidden>
-    <a href="#timeline">籌備時程</a>
-    <a href="#join">加入籌備</a>
     <a href="#about">關於 SITCON</a>
-    <a href={siteConfig.recruitment.overviewUrl} target="_blank" rel="noreferrer">工作人員招募</a>
+    <a href="#activities">社群活動</a>
+    <a href="#event">2027 年會</a>
+    <a href={siteConfig.links.contact}>合作洽詢</a>
   </nav>
 </header>
 
@@ -60,6 +60,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   });
 
   menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true") { closeMenu(); toggle.focus(); }
+  });
 
   window.addEventListener("scroll", () => header?.classList.toggle("is-scrolled", window.scrollY > 16), { passive: true });
   window.addEventListener("resize", () => {

@@ -1,0 +1,16 @@
+---
+import { attendeeReview } from "../data/site";
+---
+<section class="section review-section" aria-labelledby="review-heading">
+  <div class="shell">
+    <p class="eyebrow">{attendeeReview.period}</p>
+    <div class="review-heading">
+      <h2 id="review-heading">來自不同校園，<br />在這裡相遇。</h2>
+      <p>一場年會，連結海內外的學生與資訊社群。不同的學習背景與探索經驗，讓每一次對話都有新的可能。</p>
+    </div>
+    <dl class="review-stats">
+      {attendeeReview.stats.map(stat => <div><dt>{stat.label}</dt><dd>{stat.value}<small>{stat.unit}</small></dd></div>)}
+    </dl>
+    <p class="source-note">以上為 2025 年會單屆回顧資料。<a href={attendeeReview.source.url} target="_blank" rel="noopener noreferrer">來源：{attendeeReview.source.label}</a></p>
+  </div>
+</section>

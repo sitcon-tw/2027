@@ -1,0 +1,40 @@
+---
+import { Picture } from "astro:assets";
+import { ArrowUpRight, Play } from "@lucide/astro";
+import { mediaReport } from "../data/site";
+---
+<section class="section media-section" aria-labelledby="media-heading">
+  <div class="shell media-grid">
+    <div>
+      <p class="eyebrow">媒體報導</p>
+      <h2 id="media-heading">從報導，<br />認識 SITCON。</h2>
+      <p class="media-description">{mediaReport.description}</p>
+      <a class="text-link" href={mediaReport.watchUrl} target="_blank" rel="noopener noreferrer">在 YouTube 觀看<ArrowUpRight size={18} aria-hidden="true" /></a>
+      <p class="source-note">收錄於 <a href={mediaReport.source} target="_blank" rel="noopener noreferrer">SITCON Camp 2026 關於我們</a></p>
+    </div>
+    <figure class="report-figure">
+      <div class="report-player" data-report-player data-embed-url={mediaReport.embedUrl} data-title={mediaReport.title}>
+        <button type="button" class="report-play" aria-label={`播放報導：${mediaReport.title}`}>
+          <Picture src={mediaReport.thumbnail} alt="台灣新驕點報導影片預覽" fallbackFormat="webp" formats={["webp"]} widths={[640, 960]} sizes="(max-width: 800px) 100vw, 55vw" loading="lazy" />
+          <span class="play-icon"><Play size={32} aria-hidden="true" /></span>
+          <span class="play-label">播放報導</span>
+        </button>
+      </div>
+      <figcaption>{mediaReport.title}</figcaption>
+    </figure>
+  </div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-report-player]").forEach(player => {
+    player.querySelector("button")?.addEventListener("click", () => {
+      const iframe = document.createElement("iframe");
+      iframe.src = player.dataset.embedUrl!;
+      iframe.title = player.dataset.title!;
+      iframe.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      player.replaceChildren(iframe);
+      iframe.focus();
+    }, { once: true });
+  });
+</script>

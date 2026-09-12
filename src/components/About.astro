@@ -1,39 +1,36 @@
 ---
-import { ArrowUpRight, FileText, FolderGit2, Mail } from "@lucide/astro";
-import { siteConfig } from "../data/site";
+import { Picture } from "astro:assets";
+import { communityScale } from "../data/site";
+import communityImage from "../assets/sitcon-2026-crew.jpg";
 ---
-
 <section id="about" class="section about-section" aria-labelledby="about-heading">
-  <div class="shell about-grid">
-    <div class="about-title">
-      <p class="eyebrow">Students' Information Technology Conference</p>
-      <h2 id="about-heading">學生創造的<br />開源現場。</h2>
+  <div class="shell">
+    <div class="about-grid">
+      <div>
+        <p class="eyebrow">Since 2012 · 由學生發起</p>
+        <h2 id="about-heading">這個舞台，<br />有我們一起。</h2>
+      </div>
+      <div class="about-copy">
+        <p>從 2012 年開始，SITCON 以學生為本，持續投入資訊教育與開源精神推廣。每一場交流背後，都是願意分享所學、一起做事的人。</p>
+        <p>從第一次參與，到走上講台、加入志工行列，學生的熱情在這裡匯聚，也讓知識與經驗持續傳承。</p>
+      </div>
     </div>
-    <div class="about-copy">
-      <p>學生計算機年會（SITCON）自 2012 年發起，以學生為本、由學生自發舉辦，長期投入學生資訊教育與開源精神推廣。</p>
-      <p>我們希望讓所有對資訊有興趣的學生齊聚一堂，彼此激盪、傳承與啟發。不論背景與身分，都能在這裡找到參與、分享與實作的機會。</p>
-      <a class="text-link" href={siteConfig.links.codeOfConduct} target="_blank" rel="noreferrer">
-        閱讀行為準則
-        <ArrowUpRight size={18} aria-hidden="true" />
-      </a>
+    <dl class="scale-primary">
+      {communityScale.primary.map(stat => (
+        <div><dt>{stat.label}</dt><dd>{stat.value}<small>{stat.unit}</small></dd></div>
+      ))}
+    </dl>
+    <div class="scale-bottom">
+      <dl class="scale-secondary">
+        {communityScale.secondary.map(stat => (
+          <div><dt>{stat.label}</dt><dd>{stat.value}<small>{stat.unit}</small></dd></div>
+        ))}
+      </dl>
+      <p class="source-note">{communityScale.period}<br /><a href={communityScale.source.url} target="_blank" rel="noopener noreferrer">資料來源：{communityScale.source.label}</a></p>
     </div>
-  </div>
-
-  <div class="shell community-links">
-    <a href={siteConfig.links.mailingList} target="_blank" rel="noreferrer">
-      <Mail size={21} aria-hidden="true" />
-      <span><small>參與公開討論</small>郵件論壇</span>
-      <ArrowUpRight size={22} aria-hidden="true" />
-    </a>
-    <a href={siteConfig.links.hackmd} target="_blank" rel="noreferrer">
-      <FileText size={21} aria-hidden="true" />
-      <span><small>瀏覽公開共筆</small>HackMD</span>
-      <ArrowUpRight size={22} aria-hidden="true" />
-    </a>
-    <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
-      <FolderGit2 size={21} aria-hidden="true" />
-      <span><small>瀏覽公開程式碼</small>GitHub</span>
-      <ArrowUpRight size={22} aria-hidden="true" />
-    </a>
+    <figure class="community-photo">
+      <Picture src={communityImage} alt="SITCON 2026 工作人員在年會現場合影" formats={["avif", "webp"]} widths={[640, 960, 1440]} sizes="(max-width: 800px) 100vw, 1280px" loading="lazy" />
+      <figcaption>每一個現場，都由一群願意投入的人共同完成。<span>SITCON 2026 工作人員合影</span></figcaption>
+    </figure>
   </div>
 </section>

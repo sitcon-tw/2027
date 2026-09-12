@@ -1,0 +1,27 @@
+---
+import { Picture } from "astro:assets";
+import { ArrowUpRight } from "@lucide/astro";
+import { communityActivities } from "../data/site";
+---
+<section id="activities" class="section stories-section" aria-labelledby="stories-heading">
+  <div class="shell">
+    <p class="eyebrow">Learn · Share · Build</p>
+    <h2 id="stories-heading">活動足跡</h2>
+    <p class="stories-lede">從年會、夏令營，到 Hour of Code 與黑客松，回顧 SITCON 歷年舉辦的活動，看見學習、交流與實作的不同樣貌。</p>
+    <div class="story-list">
+      {communityActivities.map((activity, index) => (
+        <article class="story">
+          <div class="story-image"><Picture src={activity.image} alt={activity.imageAlt} fallbackFormat="webp" formats={["avif", "webp"]} widths={[480, 800, 1200]} sizes="(max-width: 800px) 100vw, 50vw" loading="lazy" /></div>
+          <div class="story-copy">
+            <p class="eyebrow"><span>0{index + 1}</span> {activity.name}</p>
+            <h3>{activity.label}</h3>
+            <p>{activity.description}</p>
+            <p class="story-detail">{activity.detail}</p>
+            <a class="text-link" href={activity.url} target="_blank" rel="noopener noreferrer">認識 {activity.name}<ArrowUpRight size={18} aria-hidden="true" /></a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="source-note">活動介紹與照片來源：<a href={communityActivities[0].source} target="_blank" rel="noopener noreferrer">SITCON Camp 2026 關於我們</a></p>
+  </div>
+</section>
