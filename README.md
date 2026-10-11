@@ -32,19 +32,20 @@ rsvg-convert public/og-card.svg -o public/og-card.png
 - 更新內容時同步檢查 SEO 文案、OG 圖、結構化資料與 sitemap 的 `lastmod`。
 - 上線後可透過 Google Search Console 提交 sitemap；搜尋摘要更新取決於搜尋引擎重新索引。
 
-## CFS publication
+## CFS and CFP publication
 
-The deployment checks out the generated `build` branch of
-[`sitcon-tw/2027-cfs`](https://github.com/sitcon-tw/2027-cfs), copies its files into
-`dist/cfs/`, and publishes the combined site at <https://sitcon.org/2027/>.
-CFS is built entirely in its own repository; this repository only reads its output.
-The consumed CFS commit is recorded in the deployment workflow summary.
+The deployment checks out the generated `build` branches of
+[`sitcon-tw/2027-cfs`](https://github.com/sitcon-tw/2027-cfs) and
+[`sitcon-tw/2027-cfp`](https://github.com/sitcon-tw/2027-cfp), copies their files into
+`dist/cfs/` and `dist/cfp/`, and publishes the combined site at <https://sitcon.org/2027/>.
+CFS and CFP are built entirely in their own repositories; this repository only reads
+their output. The consumed commits are recorded in the deployment workflow summary.
 
-For CFS updates, first wait for **Build CFS site** in `2027-cfs` to succeed, then
-manually run **Deploy website** here on `main`. Normal main-branch deployments also
-use the latest successful CFS build. There are no scheduled refreshes or
-cross-repository writes. Missing CFS output fails deployment, leaving the existing
-live website unchanged.
+For updates, first wait for **Build CFS site** in `2027-cfs` or **Build CFP site** in
+`2027-cfp` to succeed, then manually run **Deploy website** here on `main`. Normal
+main-branch deployments also use the latest successful builds. There are no scheduled
+refreshes or cross-repository writes. Missing CFS or CFP output fails deployment,
+leaving the existing live website unchanged.
 
 ## 社群介紹與資料來源
 

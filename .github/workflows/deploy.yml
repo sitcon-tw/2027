@@ -60,6 +60,22 @@ jobs:
           cfs_revision=$(git -C cfs-built rev-parse HEAD)
           echo "CFS build: [${cfs_revision}](https://github.com/sitcon-tw/2027-cfs/commit/${cfs_revision})" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Checkout built CFP site
+        uses: actions/checkout@v4
+        with:
+          repository: sitcon-tw/2027-cfp
+          ref: build
+          path: cfp-built
+          persist-credentials: false
+
+      - name: Assemble CFP output
+        run: |
+          test -f cfp-built/index.html
+          mkdir -p dist/cfp
+          rsync -a --exclude='.git' cfp-built/ dist/cfp/
+          cfp_revision=$(git -C cfp-built rev-parse HEAD)
+          echo "CFP build: [${cfp_revision}](https://github.com/sitcon-tw/2027-cfp/commit/${cfp_revision})" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Publish static files to build branch
         run: |
           if git ls-remote --exit-code --heads origin build >/dev/null 2>&1; then
