@@ -16,7 +16,7 @@ const {
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 const canonicalPath = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(canonicalPath, Astro.site);
-const imageUrl = new URL("og-card.png", canonical);
+const imageUrl = new URL(`${baseUrl}/og-card.png`, Astro.site);
 const organizationId = "https://sitcon.org/#organization";
 const websiteId = "https://sitcon.org/#website";
 const webpageId = `${canonical.href}#webpage`;
@@ -154,7 +154,7 @@ const structuredData = {
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="zh-TW" href={canonical} />
     <link rel="alternate" hreflang="x-default" href={canonical} />
-    <link rel="sitemap" type="application/xml" href={new URL("sitemap.xml", canonical)} />
+    <link rel="sitemap" type="application/xml" href={new URL(`${baseUrl}/sitemap.xml`, Astro.site)} />
     <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
     <link rel="apple-touch-icon" sizes="180x180" href={`${baseUrl}/apple-touch-icon.png`} />
     <title>{title}</title>
