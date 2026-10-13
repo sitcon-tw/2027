@@ -34,6 +34,11 @@ rsvg-convert public/og-card.svg -o public/og-card.png
 
 ## CFS and CFP publication
 
+The `/2027/` entry redirects to `/2027/cfp/` using `location.replace`, preserving
+query parameters and the fragment without adding a back-button redirect loop. A
+meta refresh provides the redirect when JavaScript is disabled. The original
+portal markup remains as a fallback and for the font-subset build pipeline.
+
 The deployment checks out the generated `build` branches of
 [`sitcon-tw/2027-cfs`](https://github.com/sitcon-tw/2027-cfs) and
 [`sitcon-tw/2027-cfp`](https://github.com/sitcon-tw/2027-cfp), copies their files into

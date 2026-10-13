@@ -6,9 +6,11 @@ import { siteConfig } from "../data/site";
 interface Props {
   title?: string;
   description?: string;
+  redirectTo?: string;
 }
 
 const {
+  redirectTo,
   title = siteConfig.seo.title,
   description = siteConfig.seo.description,
 } = Astro.props;
@@ -112,6 +114,14 @@ const structuredData = {
 <!doctype html>
 <html lang="zh-TW">
   <head>
+    {redirectTo && (
+      <>
+        <script is:inline define:vars={{ redirectTo }}>
+          window.location.replace(redirectTo + window.location.search + window.location.hash);
+        </script>
+        <noscript><meta http-equiv="refresh" content={`0;url=${redirectTo}`} /></noscript>
+      </>
+    )}
     <!-- Google Tag Manager -->
     <script is:inline>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
