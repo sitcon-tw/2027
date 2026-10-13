@@ -36,8 +36,11 @@ rsvg-convert public/og-card.svg -o public/og-card.png
 
 The community portal is available at `/2027/landing/`; the font-subset build
 pipeline derives its critical glyphs from that page. The root `index.html` in this
-repository redirects `/2027/` to `/2027/cfp/` with an HTML meta refresh, using the
-same template as the main site's short links. The separate `/cfp/` shortcut is
+repository redirects `/2027/` to `/2027/cfp/` with an inline head script, following
+the main site's silent entry behavior. `location.replace` preserves query strings
+and fragments without adding a history entry; a noscript meta refresh handles
+browsers with JavaScript disabled. It uses SITCON 2027 metadata and the CFP
+background color, with no visible redirect notice. The separate `/cfp/` shortcut is
 configured in `links.json` in `sitcon-tw/sitcon-tw.github.com`.
 
 The deployment checks out the generated `build` branches of
