@@ -28,9 +28,10 @@ rsvg-convert public/og-card.svg -o public/og-card.png
 ## SEO 部署檢查
 
 - 社群入口正式網址保留結尾斜線：`https://sitcon.org/2027/landing/`。
-- 根網站 sitemap 應包含本頁；本專案另提供 `/2027/sitemap.xml`。
-- 更新內容時同步檢查 SEO 文案、OG 圖、結構化資料與 sitemap 的 `lastmod`。
-- 上線後可透過 Google Search Console 提交 sitemap；搜尋摘要更新取決於搜尋引擎重新索引。
+- 各站維護自己的 sitemap：本站為 `/2027/sitemap.xml`；CFP 在預渲染時依公開路由與正式 canonical 自動產生 `/2027/cfp/sitemap.xml`；CFS 沿用自動產生的 `/2027/cfs/sitemap-index.xml` 與中英文頁面的 `hreflang` 對應。
+- 清單只列正式內容頁；`/2027/` 轉址頁、CFP 投稿／驗證頁與舊路由，以及 CFS 報價工具頁不列入。新增公開頁面時更新所屬站的路由與 sitemap 來源；CFP 共用 `content.json` 的 `metadata.pages`，不另外維護 XML 清單。
+- 更新內容時同步檢查 SEO 文案、OG 圖、結構化資料與 sitemap 的 `lastmod`；不要因重新部署而改寫內容更新日期。
+- 根網站的 `robots.txt`（`sitcon-tw/sitcon-tw.github.com`）直接宣告上述三個 sitemap 入口。首次發布時，先完成 CFP 建置與本站部署，再發布根站宣告；上線後也可分別向 Google Search Console 提交這三個網址。
 
 ## CFS and CFP publication
 
@@ -50,11 +51,9 @@ The deployment checks out the generated `build` branches of
 CFS and CFP are built entirely in their own repositories; this repository only reads
 their output. The consumed commits are recorded in the deployment workflow summary.
 
-For updates, first wait for **Build CFS site** in `2027-cfs` or **Build CFP site** in
-`2027-cfp` to succeed, then manually run **Deploy website** here on `main`. Normal
-main-branch deployments also use the latest successful builds. There are no scheduled
-refreshes or cross-repository writes. Missing CFS or CFP output fails deployment,
-leaving the existing live website unchanged.
+After **Build CFP site** publishes its output, it automatically triggers **Deploy website** here on `main`. For CFS updates, wait for **Build CFS site** in `2027-cfs` to succeed, then manually run **Deploy website** here on `main`. If the CFP trigger fails after publishing its output, the same manual run can publish it.
+
+Normal main-branch deployments also use the latest successful builds. There are no scheduled refreshes. Missing CFS or CFP output fails deployment, leaving the existing live website unchanged.
 
 ## 社群介紹與資料來源
 
