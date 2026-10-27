@@ -38,6 +38,7 @@ export const siteConfig = {
     threads: "https://sitcon.org/threads",
     youtube: "https://sitcon.org/youtube",
     flickr: "https://sitcon.org/flickr",
+    photoFinder: "https://sitcon.org/flickr-photo-finder/",
     telegram: "https://sitcon.org/telegram",
     contact: "mailto:contact@sitcon.org",
     donate: "https://sitcon.org/donate",
